@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Fácil - Gestão de Ordens de Serviço</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1976d2;
+            --primary-dark: #1565c0;
+            --secondary: #424242;
+            --success: #2e7d32;
+            --warning: #f57c00;
+            --danger: #d32f2f;
+            --info: #0288d1;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --gray: #757575;
+        }
+
+        body {
+            background-color: var(--light);
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .login-box .subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-info {
+            background: var(--info);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* Main App */
+        .app-container {
+            display: none;
+        }
+
+        .app-container.active {
+            display: block;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Sidebar */
+        .main-content {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #eee;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 15px 20px;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: var(--light);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h2 {
+            color: var(--secondary);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-card h3 {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-card.abertas .value { color: var(--warning); }
+        .stat-card.andamento .value { color: var(--info); }
+        .stat-card.concluidas .value { color: var(--success); }
+
+        /* Table */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: var(--light);
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-aberta {
+            background: #fff3e0;
+            color: var(--warning);
+        }
+
+        .status-andamento {
+            background: #e3f2fd;
+            color: var(--info);
+        }
+
+        .status-concluida {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: var(--secondary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* Notifications */
+        .notifications-panel {
+            display: none;
+        }
+
+        .notification-item {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .notification-item.unread {
+            border-left-color: var(--danger);
+        }
+
+        /* Filters */
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            color: var(--gray);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <h1>OS Fácil</h1>
+            <p class="subtitle">Sistema de Gestão de Ordens de Serviço</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Sua senha" required>
+                </div>
+                <div class="form-group">
+                    <label for="userType">Tipo de Usuário (Demo)</label>
+                    <select id="userType">
+                        <option value="admin">Administrador</option>
+                        <option value="analista">Analista Comercial</option>
+                        <option value="operacional">Operacional</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="appContainer" class="app-container">
+        <header class="header">
+            <h1>OS Fácil</h1>
+            <div class="header-info">
+                <span class="user-badge" id="userBadge">Usuário</span>
+                <button class="btn logout-btn" onclick="logout()">Sair</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <nav class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a class="active" data-page="dashboard">Dashboard</a></li>
+                    <li><a data-page="ordens">Ordens de Serviço</a></li>
+                    <li><a data-page="clientes">Clientes</a></li>
+                    <li id="menuUsuarios"><a data-page="usuarios">Usuários</a></li>
+                    <li><a data-page="notificacoes">Notificações</a></li>
+                </ul>
+            </nav>
+
+            <main class="content">
+                <!-- Dashboard -->
+                <div id="dashboard" class="page active">
+                    <div class="page-header">
+                        <h2>Dashboard</h2>
+                        <span id="currentDate"></span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card abertas">
+                            <h3>Ordens Abertas</h3>
+                            <div class="value" id="statAbertas">0</div>
+                        </div>
+                        <div class="stat-card andamento">
+                            <h3>Em Andamento</h3>
+                            <div class="value" id="statAndamento">0</div>
+                        </div>
+                        <div class="stat-card concluidas">
+                            <h3>Concluídas</h3>
+                            <div class="value" id="statConcluidas">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total de OS</h3>
+                            <div class="value" id="statTotal">0</div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <h3 style="padding: 15px 20px; color: var(--secondary);">Ordens Recentes</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Tipo</th>
+                                    <th>Status</th>
+                                    <th>Data</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrdersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Ordens de Serviço -->
+                <div id="ordens" class="page">
+                    <div class="page-header">
+                        <h2>Ordens de Serviço</h2>
+                        <button class="btn btn-primary" onclick="openOSModal()" id="btnNovaOS">Nova OS</button>
+                    </div>
+
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label>Buscar</label>
+                            <input type="text" id="searchOS" placeholder="Buscar por ID ou cliente...">
+                        </div>
+                        <div class="filter-group">
+                            <label>Status</label>
+                            <select id="filterStatus">
+                                <option value="">Todos</option>
+                                <option value="aberta">Aberta</option>
+                                <option value="andamento">Em Andamento</option>
+                                <option value="concluida">Concluída</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Tipo</label>
+                            <select id="filterTipo">
+                                <option value="">Todos</option>
+                                <option value="modificacao_tecnica">Modificação Técnica</option>
+                                <option value="troca_cavalete">Troca Cavalete para Caixa UMA</option>
+                                <option value="modificacao_dados">Modificação Dados Contratuais</option>
+                                <option value="troca_titularidade">Troca de Titularidade</option>
+                                <option value="revisao_faturas">Revisão de Faturas</option>
+                                <option value="vazamento_passeio">Vazamento no Passeio</option>
+                                <option value="vazamento_ramал">Vazamento no Ramal</option>
+                                <option value="desobstrucao_retorno">Desobstrução de Retorno</option>
+                                <option value="desobstrucao_esgoto">Desobstrução de Esgoto</option>
+                                <option value="cavalete_vazando">Cavalete Vazando</option>
+                                <option value="cavalete_quebrado">Cavalete Quebrado</option>
+                                <option value="troca_hidro">Troca de Hidrômetro</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Data Início</label>
+                            <input type="date" id="filterDataInicio">
+                        </div>
+                        <div class="filter-group">
+                            <label>Data Fim</label>
+                            <input type="date" id="filterDataFim">
+                        </div>
+                        <button class="btn btn-secondary" onclick="filterOrders()">Filtrar</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Endereço</th>
+                                    <th>Tipo</th>
+                                    <th>Executor</th>
+                                    <th>Status</th>
+                                    <th>Abertura</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Clientes -->
+                <div id="clientes" class="page">
+                    <div class="page-header">
+                        <h2>Clientes</h2>
+                        <button class="btn btn-primary" onclick="openClienteModal()">Novo Cliente</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>CPF/CNPJ</th>
+                                    <th>Telefone</th>
+                                    <th>Endereço</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Usuários -->
+                <div id="usuarios" class="page">
+                    <div class="page-header">
+                        <h2>Usuários do Sistema</h2>
+                        <button class="btn btn-primary" onclick="openUsuarioModal()">Novo Usuário</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>E-mail</th>
+                                    <th>Tipo</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usuariosTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Notificações -->
+                <div id="notificacoes" class="page">
+                    <div class="page-header">
+                        <h2>Notificações</h2>
+                    </div>
+
+                    <div id="notificationsList"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- OS Modal -->
+    <div id="osModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="osModalTitle">Nova Ordem de Serviço</h3>
+                <button class="close-modal" onclick="closeModal('osModal')">&times;</button>
+            </div>
+            <form id="osForm">
+                <input type="hidden" id="osId">
+                <div class="form-group">
+                    <label>Cliente</label>
+                    <select id="osCliente" required>
+                        <option value="">Selecione o cliente</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Serviço</label>
+                    <select id="osTipo" required>
+                        <option value="">Selecione o tipo</option>
+                        <option value="modificacao_tecnica">Modificação Técnica da Ligação</option>
+                        <option value="troca_cavalete">Troca Cavalete para Caixa UMA</option>
+                        <option value="modificacao_dados">Modificação Dados Contratuais</option>
+                        <option value="refaturamento">Refaturamento</option>
+                        <option value="pagamento_informado">Pagamento Informado</option>
+                        <option value="troca_titularidade">Troca de Titularidade</option>
+                        <option value="revisao_faturas">Revisão de Faturas</option>
+                        <option value="vazamento_passeio">Vazamento de Água no Passeio</option>
+                        <option value="vazamento_ramал">Vazamento de Água no Ramal</option>
+                        <option value="desobstrucao_retorno">Desobstrução de Retorno</option>
+                        <option value="desobstrucao_esgoto">Desobstrução de Esgoto</option>
+                        <option value="desobstrucao_ramал_esgoto">Desobstrução Ramal de Esgoto</option>
+                        <option value="cavalete_vazando">Cavalete Vazando</option>
+                        <option value="cavalete_quebrado">Cavalete Quebrado</option>
+                        <option value="troca_hidro">Troca de Hidrômetro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição do Problema</label>
+                    <textarea id="osDescricao" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Executor Responsável</label>
+                    <select id="osExecutor">
+                        <option value="">Não atribuído</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="osStatus">
+                        <option value="aberta">Aberta</option>
+                        <option value="andamento">Em Andamento</option>
+                        <option value="concluida">Concluída</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('osModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cliente Modal -->
+    <div id="clienteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="clienteModalTitle">Novo Cliente</h3>
+                <button class="close-modal" onclick="closeModal('clienteModal')">&times;</button>
+            </div>
+            <form id="clienteForm">
+                <input type="hidden" id="clienteId">
+                <div class="form-group">
+                    <label>Nome Completo / Razão Social</label>
+                    <input type="text" id="clienteNome" required>
+                </div>
+                <div class="form-group">
+                    <label>CPF / CNPJ</label>
+                    <input type="text" id="clienteDocumento" required>
+                </div>
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <input type="tel" id="clienteTelefone" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="clienteEmail">
+                </div>
+                <div class="form-group">
+                    <label>Endereço</label>
+                    <input type="text" id="clienteEndereco" required>
+                </div>
+                <div class="form-group">
+                    <label>Observações</label>
+                    <textarea id="clienteObservacoes" rows="3"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('clienteModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Usuario Modal -->
+    <div id="usuarioModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="usuarioModalTitle">Novo Usuário</h3>
+                <button class="close-modal" onclick="closeModal('usuarioModal')">&times;</button>
+            </div>
+            <form id="usuarioForm">
+                <input type="hidden" id="usuarioId">
+                <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" id="usuarioNome" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="usuarioEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="usuarioSenha">
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Acesso</label>
+                    <select id="usuarioTipo" required>
+                        <option value="operacional">Operacional</option>
+                        <option value="analista">Analista Comercial</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('usuarioModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- OS Detail Modal -->
+    <div id="osDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detalhes da OS</h3>
+                <button class="close-modal" onclick="closeModal('osDetailModal')">&times;</button>
+            </div>
+            <div id="osDetailContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentUser = null;
+        let ordens = [];
+        let clientes = [];
+        let usuarios = [];
+        let notifications = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            setupEventListeners();
+            updateDate();
+        });
+
+        function updateDate() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('pt-BR', options);
+        }
+
+        function loadData() {
+            ordens = JSON.parse(localStorage.getItem('ordens')) || generateSampleOrders();
+            clientes = JSON.parse(localStorage.getItem('clientes')) || generateSampleClientes();
+            usuarios = JSON.parse(localStorage.getItem('usuarios')) || generateSampleUsuarios();
+            notifications = JSON.parse(localStorage.getItem('notifications')) || generateSampleNotifications();
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem('ordens', JSON.stringify(ordens));
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+        }
+
+        function generateSampleOrders() {
+            const tipos = ['modificacao_tecnica', 'troca_cavalete', 'vazamento_passeio', 'desobstrucao_esgoto', 'cavalete_vazando'];
+            const status = ['aberta', 'andamento', 'concluida'];
+            return [
+                { id: 1, cliente: 1, tipo: 'vazamento_passeio', descricao: 'Vazamento identificado na calçada, água escapando constantemente', executor: 3, status: 'aberta', dataAbertura: '2024-01-15', dataConclusao: null },
+                { id: 2, cliente: 2, tipo: 'desobstrucao_esgoto', descricao: 'Esgoto retornando para o imóvel, odor forte', executor: 3, status: 'andamento', dataAbertura: '2024-01-14', dataConclusao: null },
+                { id: 3, cliente: 3, tipo: 'troca_cavalete', descricao: 'Cavalete antigo danificado, necessidade de troca para caixa UMA', executor: 3, status: 'concluida', dataAbertura: '2024-01-10', dataConclusao: '2024-01-12' },
+                { id: 4, cliente: 4, tipo: 'modificacao_tecnica', descricao: 'Modificação técnica na ligação de água', executor: null, status: 'aberta', dataAbertura: '2024-01-16', dataConclusao: null },
+                { id: 5, cliente: 5, tipo: 'cavalete_vazando', descricao: 'Vazamento no cavalete identificado', executor: 3, status: 'andamento', dataAbertura: '2024-01-13', dataConclusao: null },
+            ];
+        }
+
+        function generateSampleClientes() {
+            return [
+                { id: 1, nome: 'João Silva', documento: '123.456.789-00', telefone: '(11) 99999-9999', email: 'joao@email.com', endereco: 'Rua das Flores, 123 - Centro', observacoes: '' },
+                { id: 2, nome: 'Maria Santos', documento: '987.654.321-00', telefone: '(11) 98888-8888', email: 'maria@email.com', endereco: 'Av. Brasil, 456 - Jd. América', observacoes: '' },
+                { id: 3, nome: 'Carlos Oliveira', documento: '111.222.333-44', telefone: '(11) 97777-7777', email: 'carlos@email.com', endereco: 'Rua Nova, 789 - Vila Nova', observacoes: '' },
+                { id: 4, nome: 'Empresa ABC Ltda', documento: '12.345.678/0001-90', telefone: '(11) 96666-6666', email: 'contato@empresa.com', endereco: 'Av. Industrial, 1000 - Distrito Industrial', observacoes: 'Cliente corporativo' },
+                { id: 5, nome: 'Ana Costa', documento: '555.666.777-88', telefone: '(11) 95555-5555', email: 'ana@email.com', endereco: 'Rua das Palmeiras, 200 - Parque das Palmeiras', observacoes: '' },
+            ];
+        }
+
+        function generateSampleUsuarios() {
+            return [
+                { id: 1, nome: 'Administrador', email: 'admin@osfacil.com', senha: '123', tipo: 'admin' },
+                { id: 2, nome: 'Paulo Analista', email: 'paulo@osfacil.com', senha: '123', tipo: 'analista' },
+                { id: 3, nome: 'Pedro Executor', email: 'pedro@osfacil.com', senha: '123', tipo: 'operacional' },
+            ];
+        }
+
+        function generateSampleNotifications() {
+            return [
+                { id: 1, titulo: 'Nova OS atribuída', mensagem: 'Uma nova ordem de serviço foi atribuída a você.', data: '2024-01-16 10:30', lida: false },
+                { id: 2, titulo: 'OS concluída', mensagem: 'A OS #3 foi marcada como concluída.', data: '2024-01-12 15:45', lida: true },
+                { id: 3, titulo: 'Lembrete', mensagem: 'Verificar OS em andamento.', data: '2024-01-15 09:00', lida: false },
+            ];
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('osForm').addEventListener('submit', handleSaveOS);
+            document.getElementById('clienteForm').addEventListener('submit', handleSaveCliente);
+            document.getElementById('usuarioForm').addEventListener('submit', handleSaveUsuario);
+
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.addEventListener('click', handleMenuClick);
+            });
+        }
+
+        // Auth
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const userType = document.getElementById('userType').value;
+            
+            currentUser = usuarios.find(u => u.tipo === userType) || { 
+                id: Date.now(), 
+                nome: 'Usuário Demo', 
+                email, 
+                tipo: userType 
+            };
+
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').classList.add('active');
+            document.getElementById('userBadge').textContent = `${currentUser.nome} (${getTipoLabel(currentUser.tipo)})`;
+
+            // Hide admin-only menus
+            if (currentUser.tipo !== 'admin') {
+                document.getElementById('menuUsuarios').style.display = 'none';
+            }
+            if (currentUser.tipo === 'operacional') {
+                document.getElementById('btnNovaOS').style.display = 'none';
+            }
+
+            loadDashboard();
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('appContainer').classList.remove('active');
+            document.getElementById('menuUsuarios').style.display = 'block';
+            document.getElementById('btnNovaOS').style.display = 'block';
+        }
+
+        // Navigation
+        function handleMenuClick(e) {
+            const page = e.target.dataset.page;
+            
+            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(page).classList.add('active');
+
+            loadPage(page);
+        }
+
+        function loadPage(page) {
+            switch(page) {
+                case 'dashboard': loadDashboard(); break;
+                case 'ordens': loadOrdens(); break;
+                case 'clientes': loadClientes(); break;
+                case 'usuarios': loadUsuarios(); break;
+                case 'notificacoes': loadNotificacoes(); break;
+            }
+        }
+
+        // Dashboard
+        function loadDashboard() {
+            const abertas = ordens.filter(o => o.status === 'aberta').length;
+            const andamento = ordens.filter(o => o.status === 'andamento').length;
+            const concluidas = ordens.filter(o => o.status === 'concluida').length;
+
+            document.getElementById('statAbertas').textContent = abertas;
+            document.getElementById('statAndamento').textContent = andamento;
+            document.getElementById('statConcluidas').textContent = concluidas;
+            document.getElementById('statTotal').textContent = ordens.length;
+
+            const recent = ordens.slice(-5).reverse();
+            document.getElementById('recentOrdersTable').innerHTML = recent.map(o => `
+                <tr>
+                    <td>#${o.id}</td>
+                    <td>${getClienteNome(o.cliente)}</td>
+                    <td>${getTipoLabel(o.tipo)}</td>
+                    <td><span class="status-badge status-${o.status}">${getStatusLabel(o.status)}</span></td>
+                    <td>${formatDate(o.dataAbertura)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Ordens
+        function loadOrdens() {
+            renderOrdersTable(ordens);
+        }
+
+        function renderOrdersTable(orders) {
+            document.getElementById('ordersTable').innerHTML = orders.map(o => `
+                <tr>
+                    <td>#${o.id}</td>
+                    <td>${getClienteNome(o.cliente)}</td>
+                    <td>${getClienteEndereco(o.cliente)}</td>
+                    <td>${getTipoLabel(o.tipo)}</td>
+                    <td>${o.executor ? getUsuarioNome(o.executor) : '-'}</td>
+                    <td><span class="status-badge status-${o.status}">${getStatusLabel(o.status)}</span></td>
+                    <td>${formatDate(o.dataAbertura)}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>
+                            ${currentUser.tipo !== 'operacional' ? `<button class="btn btn-sm btn-warning" onclick="editOS(${o.id})">Editar</button>` : ''}
+                            ${currentUser.tipo === 'admin' ? `<button class="btn btn-sm btn-danger" onclick="deleteOS(${o.id})">Excluir</button>` : ''}
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterOrders() {
+            const search = document.getElementById('searchOS').value.toLowerCase();
+            const status = document.getElementById('filterStatus').value;
+            const tipo = document.getElementById('filterTipo').value;
+            const dataInicio = document.getElementById('filterDataInicio').value;
+            const dataFim = document.getElementById('filterDataFim').value;
+
+            let filtered = ordens.filter(o => {
+                const clienteNome = getClienteNome(o.cliente).toLowerCase();
+                const matchSearch = !search || clienteNome.includes(search) || `#${o.id}` === search;
+                const matchStatus = !status || o.status === status;
+                const matchTipo = !tipo || o.tipo === tipo;
+                const matchDataInicio = !dataInicio || o.dataAbertura >= dataInicio;
+                const matchDataFim = !dataFim || o.dataAbertura <= dataFim;
+                return matchSearch && matchStatus && matchTipo && matchDataInicio && matchDataFim;
+            });
+
+            renderOrdersTable(filtered);
+        }
+
+        function openOSModal(id = null) {
+            document.getElementById('osModalTitle').textContent = id ? 'Editar OS' : 'Nova OS';
+            document.getElementById('osForm').reset();
+            document.getElementById('osId').value = id || '';
+
+            // Populate dropdowns
+            document.getElementById('osCliente').innerHTML = '<option value="">Selecione...</option>' + 
+                clientes.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+            
+            document.getElementById('osExecutor').innerHTML = '<option value="">Não atribuído</option>' + 
+                usuarios.filter(u => u.tipo === 'operacional').map(u => `<option value="${u.id}">${u.nome}</option>`).join('');
+
+            if (id) {
+                const os = ordens.find(o => o.id === id);
+                document.getElementById('osCliente').value = os.cliente;
+                document.getElementById('osTipo').value = os.tipo;
+                document.getElementById('osDescricao').value = os.descricao;
+                document.getElementById('osExecutor').value = os.executor || '';
+                document.getElementById('osStatus').value = os.status;
+            }
+
+            openModal('osModal');
+        }
+
+        function handleSaveOS(e) {
+            e.preventDefault();
+            const id = document.getElementById('osId').value;
+            const osData = {
+                cliente: parseInt(document.getElementById('osCliente').value),
+                tipo: document.getElementById('osTipo').value,
+                descricao: document.getElementById('osDescricao').value,
+                executor: document.getElementById('osExecutor').value ? parseInt(document.getElementById('osExecutor').value) : null,
+                status: document.getElementById('osStatus').value,
+                dataConclusao: document.getElementById('osStatus').value === 'concluida' ? new Date().toISOString().split('T')[0] : null
+            };
+
+            if (id) {
+                const index = ordens.findIndex(o => o.id === parseInt(id));
+                ordens[index] = { ...ordens[index], ...osData };
+            } else {
+                osData.id = Math.max(...ordens.map(o => o.id), 0) + 1;
+                osData.dataAbertura = new Date().toISOString().split('T')[0];
+                ordens.push(osData);
+            }
+
+            saveData();
+            closeModal('osModal');
+            loadOrdens();
+            loadDashboard();
+        }
+
+        function editOS(id) {
+            openOSModal(id);
+        }
+
+        function deleteOS(id) {
+            if (confirm('Tem certeza que deseja excluir esta OS?')) {
+                ordens = ordens.filter(o => o.id !== id);
+                saveData();
+                loadOrdens();
+                loadDashboard();
+            }
+        }
+
+        function viewOS(id) {
+            const os = ordens.find(o => o.id === id);
+            const cliente = clientes.find(c => c.id === os.cliente);
+            const executor = os.executor ? usuarios.find(u => u.id === os.executor) : null;
+
+            document.getElementById('osDetailContent').innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <p><strong>ID:</strong> #${os.id}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-${os.status}">${getStatusLabel(os.status)}</span></p>
+                    <p><strong>Data de Abertura:</strong> ${formatDate(os.dataAbertura)}</p>
+                    ${os.dataConclusao ? `<p><strong>Data de Conclusão:</strong> ${formatDate(os.dataConclusao)}</p>` : ''}
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--secondary); margin-bottom: 10px;">Cliente</h4>
+                    <p><strong>Nome:</strong> ${cliente?.nome || 'N/A'}</p>
+                    <p><strong>Endereço:</strong> ${cliente?.endereco || 'N/A'}</p>
+                    <p><strong>Telefone:</strong> ${cliente?.telefone || 'N/A'}</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--secondary); margin-bottom: 10px;">Serviço</h4>
+                    <p><strong>Tipo:</strong> ${getTipoLabel(os.tipo)}</p>
+                    <p><strong>Descrição:</strong> ${os.descricao}</p>
+                    <p><strong>Executor:</strong> ${executor?.nome || 'Não atribuído'}</p>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    ${currentUser.tipo !== 'operacional' ? `<button class="btn btn-warning" onclick="closeModal('osDetailModal'); editOS(${os.id});">Editar</button>` : ''}
+                    <button class="btn btn-secondary" onclick="closeModal('osDetailModal')">Fechar</button>
+                </div>
+            `;
+            openModal('osDetailModal');
+        }
+
+        // Clientes
+        function loadClientes() {
+            document.getElementById('clientesTable').innerHTML = clientes.map(c => `
+                <tr>
+                    <td>#${c.id}</td>
+                    <td>${c.nome}</td>
+                    <td>${c.documento}</td>
+                    <td>${c.telefone}</td>
+                    <td>${c.endereco}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn btn-sm btn-warning" onclick="editCliente(${c.id})">Editar</button>
+                            ${currentUser.tipo === 'admin' ? `<button class="btn btn-sm btn-danger" onclick="deleteCliente(${c.id})">Excluir</button>` : ''}
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openClienteModal(id = null) {
+            document.getElementById('clienteModalTitle').textContent = id ? 'Editar Cliente' : 'Novo Cliente';
+            document.getElementById('clienteForm').reset();
+            document.getElementById('clienteId').value = id || '';
+
+            if (id) {
+                const c = clientes.find(cl => cl.id === id);
+                document.getElementById('clienteNome').value = c.nome;
+                document.getElementById('clienteDocumento').value = c.documento;
+                document.getElementById('clienteTelefone').value = c.telefone;
+                document.getElementById('clienteEmail').value = c.email || '';
+                document.getElementById('clienteEndereco').value = c.endereco;
+                document.getElementById('clienteObservacoes').value = c.observacoes || '';
+            }
+
+            openModal('clienteModal');
+        }
+
+        function handleSaveCliente(e) {
+            e.preventDefault();
+            const id = document.getElementById('clienteId').value;
+            const clienteData = {
+                nome: document.getElementById('clienteNome').value,
+                documento: document.getElementById('clienteDocumento').value,
+                telefone: document.getElementById('clienteTelefone').value,
+                email: document.getElementById('clienteEmail').value,
+                endereco: document.getElementById('clienteEndereco').value,
+                observacoes: document.getElementById('clienteObservacoes').value
+            };
+
+            if (id) {
+                const index = clientes.findIndex(c => c.id === parseInt(id));
+                clientes[index] = { ...clientes[index], ...clienteData };
+            } else {
+                clienteData.id = Math.max(...clientes.map(c => c.id), 0) + 1;
+                clientes.push(clienteData);
+            }
+
+            saveData();
+            closeModal('clienteModal');
+            loadClientes();
+        }
+
+        function editCliente(id) {
+            openClienteModal(id);
+        }
+
+        function deleteCliente(id) {
+            if (confirm('Tem certeza que deseja excluir este cliente?')) {
+                clientes = clientes.filter(c => c.id !== id);
+                saveData();
+                loadClientes();
+            }
+        }
+
+        // Usuarios
+        function loadUsuarios() {
+            document.getElementById('usuariosTable').innerHTML = usuarios.map(u => `
+                <tr>
+                    <td>#${u.id}</td>
+                    <td>${u.nome}</td>
+                    <td>${u.email}</td>
+                    <td>${getTipoLabel(u.tipo)}</td>
+                    <td><span class="status-badge status-${u.tipo === 'admin' ? 'aberta' : 'concluida'}">Ativo</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn btn-sm btn-warning" onclick="editUsuario(${u.id})">Editar</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUsuario(${u.id})">Excluir</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openUsuarioModal(id = null) {
+            document.getElementById('usuarioModalTitle').textContent = id ? 'Editar Usuário' : 'Novo Usuário';
+            document.getElementById('usuarioForm').reset();
+            document.getElementById('usuarioId').value = id || '';
+
+            if (id) {
+                const u = usuarios.find(us => us.id === id);
+                document.getElementById('usuarioNome').value = u.nome;
+                document.getElementById('usuarioEmail').value = u.email;
+                document.getElementById('usuarioTipo').value = u.tipo;
+            }
+
+            openModal('usuarioModal');
+        }
+
+        function handleSaveUsuario(e) {
+            e.preventDefault();
+            const id = document.getElementById('usuarioId').value;
+            const senha = document.getElementById('usuarioSenha').value;
+            const usuarioData = {
+                nome: document.getElementById('usuarioNome').value,
+                email: document.getElementById('usuarioEmail').value,
+                tipo: document.getElementById('usuarioTipo').value
+            };
+
+            if (senha) usuarioData.senha = senha;
+
+            if (id) {
+                const index = usuarios.findIndex(u => u.id === parseInt(id));
+                usuarios[index] = { ...usuarios[index], ...usuarioData };
+            } else {
+                if (!senha) {
+                    alert('Senha é obrigatória para novos usuários');
+                    return;
+                }
+                usuarioData.id = Math.max(...usuarios.map(u => u.id), 0) + 1;
+                usuarios.push(usuarioData);
+            }
+
+            saveData();
+            closeModal('usuarioModal');
+            loadUsuarios();
+        }
+
+        function editUsuario(id) {
+            openUsuarioModal(id);
+        }
+
+        function deleteUsuario(id) {
+            if (confirm('Tem certeza que deseja excluir este usuário?')) {
+                usuarios = usuarios.filter(u => u.id !== id);
+                saveData();
+                loadUsuarios();
+            }
+        }
+
+        // Notificações
+        function loadNotificacoes() {
+            document.getElementById('notificationsList').innerHTML = notifications.map(n => `
+                <div class="notification-item ${n.lida ? '' : 'unread'}">
+                    <h4>${n.titulo}</h4>
+                    <p>${n.mensagem}</p>
+                    <small style="color: var(--gray);">${n.data}</small>
+                </div>
+            `).join('');
+        }
+
+        // Helpers
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function getClienteNome(id) {
+            return clientes.find(c => c.id === id)?.nome || 'N/A';
+        }
+
+        function getClienteEndereco(id) {
+            return clientes.find(c => c.id === id)?.endereco || 'N/A';
+        }
+
+        function getUsuarioNome(id) {
+            return usuarios.find(u => u.id === id)?.nome || 'N/A';
+        }
+
+        function getTipoLabel(tipo) {
+            const labels = {
+                'modificacao_tecnica': 'Modificação Técnica',
+                'troca_cavalete': 'Troca Cavalete para Caixa UMA',
+                'modificacao_dados': 'Modificação Dados Contratuais',
+                'refaturamento': 'Refaturamento',
+                'pagamento_informado': 'Pagamento Informado',
+                'troca_titularidade': 'Troca de Titularidade',
+                'revisao_faturas': 'Revisão de Faturas',
+                'vazamento_passeio': 'Vazamento no Passeio',
+                'vazamento_ramал': 'Vazamento no Ramal',
+                'desobstrucao_retorno': 'Desobstrução de Retorno',
+                'desobstrucao_esgoto': 'Desobstrução de Esgoto',
+                'desobstrucao_ramал_esgoto': 'Desobstrução Ramal de Esgoto',
+                'cavalete_vazando': 'Cavalete Vazando',
+                'cavalete_quebrado': 'Cavalete Quebrado',
+                'troca_hidro': 'Troca de Hidrômetro',
+                'admin': 'Administrador',
+                'analista': 'Analista Comercial',
+                'operacional': 'Operacional'
+            };
+            return labels[tipo] || tipo;
+        }
+
+        function getStatusLabel(status) {
+            const labels = {
+                'aberta': 'Aberta',
+                'andamento': 'Em Andamento',
+                'concluida': 'Concluída'
+            };
+            return labels[status] || status;
+        }
+
+        function formatDate(date) {
+            if (!date) return '-';
+            const d = new Date(date);
+            return d.toLocaleDateString('pt-BR');
+        }
+    </script>
+</body>
+</html>
