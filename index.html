@@ -140,28 +140,10 @@
                         <h3 class="px-5 py-4 text-gray-600 font-semibold">Ordens de Serviço em Aberto</h3>
                         <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold cursor-pointer select-none" data-sort-id="clienteHomeOSTable" onclick="sortTableByColumn('clienteHomeOSTable', 3)">Abertura <span class="sort-arrow">&#9654;</span></th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th></tr>
                             </thead>
                             <tbody id="clienteHomeOSTable"></tbody>
                         </table>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3 sm:gap-5">
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('solicitacao-servico')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Solicitação de serviços</h3>
-                            <p class="text-gray-500 text-sm">Solicitar um novo serviço</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('notificacoes')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Notificações</h3>
-                            <p class="text-gray-500 text-sm">Visualizar notificações</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showUserProfile()">
-                            <h3 class="text-gray-700 font-semibold mb-2">Meu Perfil</h3>
-                            <p class="text-gray-500 text-sm">Meus dados de usuário</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('minhas-ordens')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Minhas Solicitações</h3>
-                            <p class="text-gray-500 text-sm">Acompanhar e cancelar ordens</p>
-                        </div>
                     </div>
                 </div>
 
@@ -184,36 +166,10 @@
                         <h3 class="px-5 py-4 text-gray-600 font-semibold">Ordens de Serviço em Aberto</h3>
                         <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold cursor-pointer select-none" data-sort-id="analistaHomeOSTable" onclick="sortTableByColumn('analistaHomeOSTable', 4)">Abertura <span class="sort-arrow">&#9654;</span></th></tr>
                             </thead>
                             <tbody id="analistaHomeOSTable"></tbody>
                         </table>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3 sm:gap-5">
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('solicitacao-servico')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Solicitação de serviços</h3>
-                            <p class="text-gray-500 text-sm">Solicitar um novo serviço</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('notificacoes')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Notificações</h3>
-                            <p class="text-gray-500 text-sm">Visualizar notificações</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showUserProfile()">
-                            <h3 class="text-gray-700 font-semibold mb-2">Meu Perfil</h3>
-                            <p class="text-gray-500 text-sm">Meus dados de usuário</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-analista')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Ordens de Serviço</h3>
-                            <p class="text-gray-500 text-sm">Gerenciar ordens pendentes e buscar ordens</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('documentacao')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Documentação</h3>
-                            <p class="text-gray-500 text-sm">Acessar documentação</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('perfil-usuarios')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Perfil dos Clientes</h3>
-                            <p class="text-gray-500 text-sm">Visualizar perfis de clientes</p>
-                        </div>
                     </div>
                 </div>
 
@@ -240,52 +196,10 @@
                         <h3 class="px-5 py-4 text-gray-600 font-semibold">Ordens de Serviço em Aberto</h3>
                         <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold cursor-pointer select-none" data-sort-id="adminHomeOSTable" onclick="sortTableByColumn('adminHomeOSTable', 4)">Abertura <span class="sort-arrow">&#9654;</span></th></tr>
                             </thead>
                             <tbody id="adminHomeOSTable"></tbody>
                         </table>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3 sm:gap-5">
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('solicitacao-servico')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Solicitação de serviços</h3>
-                            <p class="text-gray-500 text-sm">Solicitar um novo serviço</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('notificacoes')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Notificações</h3>
-                            <p class="text-gray-500 text-sm">Visualizar notificações</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showUserProfile()">
-                            <h3 class="text-gray-700 font-semibold mb-2">Meu Perfil</h3>
-                            <p class="text-gray-500 text-sm">Meus dados de usuário</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-administrativo')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Serviços Pendentes</h3>
-                            <p class="text-gray-500 text-sm">Gerenciar ordens pendentes</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-administrativo')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Serviços em Espera de Aprovação</h3>
-                            <p class="text-gray-500 text-sm">Aprovar ou rejeitar ordens</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-administrativo')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Serviços concluídos</h3>
-                            <p class="text-gray-500 text-sm">Histórico de serviços realizados</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('documentacao')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Documentação</h3>
-                            <p class="text-gray-500 text-sm">Acessar documentação</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('perfis')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Perfis</h3>
-                            <p class="text-gray-500 text-sm">Gerenciar funcionários e clientes</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('historico-ordens')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Histórico de Ordens</h3>
-                            <p class="text-gray-500 text-sm">Consultar histórico completo</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-administrativo')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Ordens expiradas</h3>
-                            <p class="text-gray-500 text-sm">Visualizar ordens vencidas</p>
-                        </div>
                     </div>
                 </div>
 
@@ -308,32 +222,10 @@
                         <h3 class="px-5 py-4 text-gray-600 font-semibold">Ordens de Serviço em Aberto</h3>
                         <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold cursor-pointer select-none" data-sort-id="operacionalHomeOSTable" onclick="sortTableByColumn('operacionalHomeOSTable', 4)">Abertura <span class="sort-arrow">&#9654;</span></th></tr>
                             </thead>
                             <tbody id="operacionalHomeOSTable"></tbody>
                         </table>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3 sm:gap-5">
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-operacional')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Ordens de Serviço</h3>
-                            <p class="text-gray-500 text-sm">Gerenciar ordens pendentes e em atraso</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showUserProfile()">
-                            <h3 class="text-gray-700 font-semibold mb-2">Meu Perfil</h3>
-                            <p class="text-gray-500 text-sm">Meus dados de usuário</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('notificacoes')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Notificações</h3>
-                            <p class="text-gray-500 text-sm">Visualizar notificações</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('documentacao')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Documentação</h3>
-                            <p class="text-gray-500 text-sm">Acessar documentação</p>
-                        </div>
-                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('servicos-executados')">
-                            <h3 class="text-gray-700 font-semibold mb-2">Serviços Executados</h3>
-                            <p class="text-gray-500 text-sm">Histórico de serviços realizados</p>
-                        </div>
                     </div>
                 </div>
 
@@ -349,7 +241,7 @@
                                     <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th>
                                     <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th>
                                     <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th>
-                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold cursor-pointer select-none" data-sort-id="minhasOrdensTable" onclick="sortTableByColumn('minhasOrdensTable', 3)">Abertura <span class="sort-arrow">&#9654;</span></th>
                                     <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th>
                                 </tr>
                             </thead>
@@ -539,7 +431,7 @@
                     <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
                         <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold cursor-pointer select-none" data-sort-id="ordensPendentesTable" onclick="sortTableByColumn('ordensPendentesTable', 4)">Abertura <span class="sort-arrow">&#9654;</span></th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th></tr>
                             </thead>
                             <tbody id="ordensPendentesTable"></tbody>
                         </table>
@@ -607,7 +499,7 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Histórico de Ordens</h2></div>
                     <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
                         <table class="w-full border-collapse min-w-[500px]">
-                            <thead><tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Conclusão</th></tr></thead>
+                            <thead><tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold cursor-pointer select-none" data-sort-id="historicoOrdensTable" onclick="sortTableByColumn('historicoOrdensTable', 4)">Abertura <span class="sort-arrow">&#9654;</span></th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Conclusão</th></tr></thead>
                             <tbody id="historicoOrdensTable"></tbody>
                         </table>
                     </div>
@@ -634,6 +526,12 @@
                         </table>
                     </div>
                 </div>
+
+                <!-- Histórico de Serviços (Operacional) -->
+                <div id="historico-servicos-operacional" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Histórico de Serviços</h2></div>
+                    <div id="historicoServicosOperacionalContent"></div>
+                </div>
             </main>
         </div>
     </div>
@@ -657,5 +555,8 @@
     </div>
 
     <script src="js/app.js"></script>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
 </body>
 </html>

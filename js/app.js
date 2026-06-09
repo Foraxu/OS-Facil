@@ -23,6 +23,47 @@ let notifications = [];
 let currentRole = null;
 let currentPage = null;
 
+// Toast notifications
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+// Sort table by column index (for static HTML tables)
+const sortState = {};
+function sortTableByColumn(tableBodyId, colIndex) {
+    const tbody = document.getElementById(tableBodyId);
+    if (!tbody) return;
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    if (rows.length === 0 || rows[0].querySelectorAll('td').length <= colIndex) return;
+
+    const key = `sort_${tableBodyId}`;
+    const currentOrder = sortState[key];
+    const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+    sortState[key] = newOrder;
+
+    rows.sort((a, b) => {
+        const dateA = a.querySelectorAll('td')[colIndex]?.textContent.trim() || '';
+        const dateB = b.querySelectorAll('td')[colIndex]?.textContent.trim() || '';
+        const da = new Date(dateA.split('/').reverse().join('-'));
+        const db = new Date(dateB.split('/').reverse().join('-'));
+        return newOrder === 'asc' ? da - db : db - da;
+    });
+
+    tbody.append(...rows);
+    updateSortArrow(tableBodyId, newOrder);
+}
+function updateSortArrow(tableBodyId, order) {
+    document.querySelectorAll(`[data-sort-id="${tableBodyId}"] .sort-arrow`).forEach(el => {
+        el.innerHTML = order === 'asc' ? '&#9650;' : '&#9660;';
+    });
+}
+
 // ---- Seção 2: Configuração ----
 const roleMenu = {
     cliente: [
@@ -54,6 +95,7 @@ const roleMenu = {
         { label: 'Notificações', page: 'notificacoes', icon: 'bell' },
         { label: 'Ordens de Serviço', page: 'ordens-servico-operacional', icon: 'clipboard-list' },
         { label: 'Serviços Executados', page: 'servicos-executados', icon: 'check-circle' },
+        { label: 'Histórico de Serviços', page: 'historico-servicos-operacional', icon: 'archive' },
         { label: 'Documentação', page: 'documentacao', icon: 'file-text' }
     ]
 };
@@ -98,32 +140,28 @@ function saveData() {
 }
 
 function hoje() {
-    return new Date().toISOString().split('T')[0];
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 function diasAtras(n) {
     const d = new Date();
     d.setDate(d.getDate() - n);
-    return d.toISOString().split('T')[0];
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
 function generateSampleOrders() {
     return [
-        { id: 1, cliente: 1, tipo: 'vazamento_passeio', descricao: 'Vazamento identificado na calçada', executor: 3, status: 'pendente', dataAbertura: diasAtras(2), dataConclusao: null, imagem: null, autor: 4 },
         { id: 2, cliente: 2, tipo: 'desobstrucao_esgoto', descricao: 'Esgoto retornando para o imóvel', executor: 2, status: 'aprovacao', dataAbertura: diasAtras(3), dataConclusao: null, imagem: null, autor: 1 },
         { id: 3, cliente: 3, tipo: 'troca_cavalete', descricao: 'Cavalete antigo danificado', executor: 3, status: 'concluido', dataAbertura: diasAtras(7), dataConclusao: diasAtras(5), imagem: null, autor: 2 },
-        { id: 4, cliente: 4, tipo: 'modificacao_tecnica', descricao: 'Modificação técnica na ligação', executor: null, status: 'pendente', dataAbertura: diasAtras(1), dataConclusao: null, imagem: null, autor: 4 },
         { id: 5, cliente: 5, tipo: 'cavalete_vazando', descricao: 'Vazamento no cavalete', executor: 3, status: 'atraso', dataAbertura: diasAtras(12), dataConclusao: null, imagem: null, autor: 1 },
-        { id: 6, cliente: 1, tipo: 'troca_hidro', descricao: 'Troca de hidrômetro', executor: null, status: 'expirado', dataAbertura: diasAtras(30), dataConclusao: null, imagem: null, autor: 4 },
         { id: 7, cliente: 2, tipo: 'revisao_faturas', descricao: 'Cliente solicitou revisão de faturas dos últimos 3 meses', executor: 2, status: 'pendente', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 2 },
-        { id: 8, cliente: 3, tipo: 'cavalete_quebrado', descricao: 'Cavalete quebrado após obra na rua', executor: 3, status: 'pendente', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 4 },
         { id: 9, cliente: 4, tipo: 'vazamento_ramal', descricao: 'Vazamento no ramal principal', executor: 3, status: 'atraso', dataAbertura: diasAtras(15), dataConclusao: null, imagem: null, autor: 1 },
         { id: 10, cliente: 5, tipo: 'refaturamento', descricao: 'Refaturamento solicitado devido a erro na leitura', executor: 2, status: 'concluido', dataAbertura: diasAtras(10), dataConclusao: diasAtras(9), imagem: null, autor: 2 },
-        { id: 11, cliente: 1, tipo: 'desobstrucao_retorno', descricao: 'Retorno de esgoto no imóvel', executor: 3, status: 'pendente', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 4 },
         { id: 12, cliente: 3, tipo: 'troca_titularidade', descricao: 'Troca de titularidade do imóvel', executor: null, status: 'aprovacao', dataAbertura: diasAtras(1), dataConclusao: null, imagem: null, autor: 2 },
-        { id: 13, cliente: 5, tipo: 'vazamento_passeio', descricao: 'Solicitado por cliente - vazamento na calçada', executor: null, status: 'pendente', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 4 },
         { id: 14, cliente: 2, tipo: 'troca_cavalete', descricao: 'Solicitado por analista - cavalete danificado', executor: null, status: 'aprovacao', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 2 },
         { id: 15, cliente: 4, tipo: 'desobstrucao_esgoto', descricao: 'Solicitado por administrativo - esgoto retornando', executor: null, status: 'pendente', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 1 },
+        { id: 16, cliente: 6, tipo: 'vazamento_passeio', descricao: 'Vazamento no passeio em frente ao imóvel', executor: null, status: 'pendente', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 4 },
     ];
 }
 
@@ -134,6 +172,7 @@ function generateSampleClientes() {
         { id: 3, nome: 'Carlos Oliveira', documento: '111.222.333-44', telefone: '(11) 97777-7777', email: 'carlos.oliveira@email.com', endereco: 'Rua Nova, 789 - Vila Nova' },
         { id: 4, nome: 'Empresa ABC Ltda', documento: '12.345.678/0001-90', telefone: '(11) 96666-6666', email: 'contato@abc.com.br', endereco: 'Av. Industrial, 1000' },
         { id: 5, nome: 'Ana Costa', documento: '555.666.777-88', telefone: '(11) 95555-5555', email: 'ana.costa@email.com', endereco: 'Rua das Palmeiras, 200' },
+        { id: 6, nome: 'Luana Ferreira', documento: '444.444.444-44', telefone: '(11) 94444-4444', email: 'luana@osfacil.com', endereco: 'Rua dos Clientes, 100' },
     ];
 }
 
@@ -154,9 +193,22 @@ function generateSampleNotifications() {
     ];
 }
 
-function addNotification(titulo, mensagem) {
-    notifications.unshift({ id: Date.now(), titulo, mensagem, data: new Date().toLocaleString('pt-BR'), lida: false });
+function addNotification(titulo, mensagem, destinatarios) {
+    notifications.unshift({ id: Date.now(), titulo, mensagem, data: new Date().toLocaleString('pt-BR'), lida: false, ...(destinatarios ? { para: destinatarios } : {}) });
     saveData();
+    atualizarBadgeNotificacoes();
+}
+
+function getUserIdsByRole(role) {
+    return usuarios.filter(u => u.tipo === role).map(u => u.id);
+}
+
+function atualizarBadgeNotificacoes() {
+    const naoLidas = notifications.filter(n => !n.lida && (!n.para || n.para.includes(currentUser?.id))).length;
+    document.querySelectorAll('#sidebarMenu a[data-page="notificacoes"] .notif-badge').forEach(el => {
+        el.textContent = naoLidas;
+        el.style.display = naoLidas > 0 ? 'inline' : 'none';
+    });
 }
 
 // ---- Seção 5: Navegação ----
@@ -201,9 +253,10 @@ function updateSidebar(role) {
     if (!menu) return;
     const sidebar = document.getElementById('sidebarMenu');
     sidebar.innerHTML = menu.map(item =>
-        `<li><a data-page="${item.page}" onclick="showPage('${item.page}')" class="flex items-center gap-3 px-5 py-4 text-gray-600 hover:bg-gray-50 hover:text-blue-600 hover:border-l-4 hover:border-blue-600 transition-all cursor-pointer"><i data-lucide="${item.icon || 'circle'}" class="w-5 h-5 flex-shrink-0"></i> ${item.label}</a></li>`
+        `<li><a data-page="${item.page}" onclick="showPage('${item.page}')" class="flex items-center gap-3 px-5 py-4 text-gray-600 hover:bg-gray-50 hover:text-blue-600 hover:border-l-4 hover:border-blue-600 transition-all cursor-pointer"><i data-lucide="${item.icon || 'circle'}" class="w-5 h-5 flex-shrink-0"></i> ${item.label}${item.page === 'notificacoes' ? ' <span class="notif-badge" style="display:none;background:var(--danger);color:#fff;font-size:11px;border-radius:50%;min-width:18px;height:18px;line-height:18px;text-align:center;margin-left:auto;font-weight:700;"></span>' : ''}</a></li>`
     ).join('');
     if (typeof lucide !== 'undefined') lucide.createIcons();
+    atualizarBadgeNotificacoes();
 }
 
 function logout() {
@@ -273,20 +326,30 @@ function lerImagemBase64(file) {
 
 function renderStatusBadgeClasse(status) {
     if (status === 'pendente') return 'pendente';
+    if (status === 'em_execucao') return 'em_execucao';
     if (status === 'aprovacao') return 'aprovacao';
     if (status === 'concluido') return 'concluido';
     if (status === 'atraso') return 'atraso';
     if (status === 'expirado') return 'expirado';
     if (status === 'cancelado') return 'cancelado';
+    if (status === 'negado') return 'negado';
+    if (status === 'falha') return 'falha';
     return 'pendente';
 }
 
 function statusAberto(status) {
-    return status === 'pendente' || status === 'aprovacao' || status === 'atraso' || status === 'em_aberto';
+    return status === 'pendente' || status === 'em_execucao' || status === 'aprovacao' || status === 'atraso' || status === 'em_aberto';
 }
 
 function getClienteNome(id) {
     return clientes.find(c => c.id === id)?.nome || 'N/A';
+}
+
+function getUserIdByClienteId(clienteId) {
+    const c = clientes.find(c => c.id === clienteId);
+    if (!c) return null;
+    const u = usuarios.find(u => u.tipo === 'cliente' && u.email === c.email);
+    return u?.id || null;
 }
 
 function getTipoLabel(tipo) {
@@ -317,11 +380,13 @@ function getTipoLabel(tipo) {
 function getStatusLabel(status) {
     const labels = {
         'pendente': 'Pendente',
+        'em_execucao': 'Em Execução',
         'aprovacao': 'Em Aprovação',
         'concluido': 'Concluído',
         'atraso': 'Em Atraso',
         'expirado': 'Expirado',
         'cancelado': 'Cancelado',
+        'negado': 'Negado',
         'em_aberto': 'Em Aberto',
         'falha': 'Falha na Execução'
     };
@@ -330,6 +395,10 @@ function getStatusLabel(status) {
 
 function formatDate(date) {
     if (!date) return '-';
+    const parts = date.split('-');
+    if (parts.length === 3) {
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
     const d = new Date(date);
     return d.toLocaleDateString('pt-BR');
 }
@@ -422,10 +491,13 @@ function handleCadastro(e) {
     saveData();
     closeModal('cadastroModal');
     document.getElementById('cadastroForm').reset();
-    alert('Cadastro realizado com sucesso! Faça o login.');
+    showToast('Cadastro realizado com sucesso! Faça o login.', 'success');
 }
 
 // ---- Seção 8: Home pages ----
+function refreshCurrentList() {
+    if (currentPage) loadPageContent(currentPage);
+}
 function loadPageContent(pageId) {
     switch (pageId) {
         case 'home-cliente': loadHomeCliente(); break;
@@ -445,6 +517,7 @@ function loadPageContent(pageId) {
         case 'ordens-servico-operacional': loadOrdensServicoOperacional(); break;
         case 'ordens-servico-administrativo': loadOrdensServicoAdministrativo(); break;
         case 'servicos-executados': loadServicosExecutados(); break;
+        case 'historico-servicos-operacional': loadHistoricoServicosOperacional(); break;
         case 'minhas-ordens': loadMinhasOrdens(); break;
         case 'solicitacao-servico': loadSolicitacaoServico(); break;
     }
@@ -456,9 +529,10 @@ function loadSolicitacaoServico() {
 }
 
 function loadHomeCliente() {
+    const statusPermitidos = ['pendente', 'aprovacao', 'em_execucao'];
     const abertas = ordens.filter(o =>
-        (o.autor === currentUser?.id) && statusAberto(o.status)
-    );
+        (o.autor === currentUser?.id) && statusPermitidos.includes(o.status)
+    ).sort((a, b) => new Date(b.dataAbertura.split('/').reverse().join('-')) - new Date(a.dataAbertura.split('/').reverse().join('-')));
     document.getElementById('clienteHomeOSTable').innerHTML = abertas.length > 0 ?
         abertas.map(o => `<tr>
             <td>#${o.id}</td>
@@ -475,7 +549,7 @@ function loadHomeAnalista() {
         ordens.filter(o => o.status === 'pendente').length;
     document.getElementById('analistaExecutados').textContent =
         ordens.filter(o => o.status === 'concluido').length;
-    const abertas = ordens.filter(o => statusAberto(o.status));
+    const abertas = ordens.filter(o => statusAberto(o.status)).sort((a, b) => new Date(b.dataAbertura.split('/').reverse().join('-')) - new Date(a.dataAbertura.split('/').reverse().join('-')));
     document.getElementById('analistaHomeOSTable').innerHTML = abertas.length > 0 ?
         abertas.map(o => `<tr>
             <td>#${o.id}</td>
@@ -495,7 +569,7 @@ function loadHomeAdministrativo() {
     document.getElementById('adminExecutados').textContent =
         ordens.filter(o => o.status === 'concluido').length;
 
-    const abertas = ordens.filter(o => statusAberto(o.status));
+    const abertas = ordens.filter(o => statusAberto(o.status)).sort((a, b) => new Date(b.dataAbertura.split('/').reverse().join('-')) - new Date(a.dataAbertura.split('/').reverse().join('-')));
     document.getElementById('adminHomeOSTable').innerHTML = abertas.length > 0 ?
         abertas.map(o => `<tr>
             <td>#${o.id}</td>
@@ -509,12 +583,12 @@ function loadHomeAdministrativo() {
 
 function loadHomeOperacional() {
     document.getElementById('operacionalPendentes').textContent =
-        ordens.filter(o => o.executor === currentUser?.id && (o.status === 'pendente' || o.status === 'aprovacao')).length;
+        ordens.filter(o => o.executor === currentUser?.id && (o.status === 'em_execucao' || o.status === 'aprovacao')).length;
     document.getElementById('operacionalExecutados').textContent =
         ordens.filter(o => o.executor === currentUser?.id && o.status === 'concluido').length;
     const abertas = ordens.filter(o =>
         o.executor === currentUser?.id && statusAberto(o.status)
-    );
+    ).sort((a, b) => new Date(b.dataAbertura.split('/').reverse().join('-')) - new Date(a.dataAbertura.split('/').reverse().join('')));
     document.getElementById('operacionalHomeOSTable').innerHTML = abertas.length > 0 ?
         abertas.map(o => `<tr>
             <td>#${o.id}</td>
@@ -527,7 +601,8 @@ function loadHomeOperacional() {
 }
 
 function loadNotificacoes() {
-    document.getElementById('notificationsList').innerHTML = notifications.map(n =>
+    const minhas = notifications.filter(n => !n.para || n.para.includes(currentUser?.id));
+    document.getElementById('notificationsList').innerHTML = minhas.map(n =>
         `<div class="notification-item ${n.lida ? '' : 'unread'}">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;">
                 <div>
@@ -539,6 +614,9 @@ function loadNotificacoes() {
             </div>
         </div>`
     ).join('');
+    minhas.forEach(n => { if (!n.lida) { n.lida = true; } });
+    saveData();
+    atualizarBadgeNotificacoes();
 }
 
 function excluirNotificacao(id) {
@@ -576,7 +654,7 @@ function showUserProfile() {
 
 // ---- Seção 9: Listagens ----
 function loadMinhasOrdens() {
-    const minhas = ordens.filter(o => o.autor === currentUser?.id || o.cliente === currentUser?.id);
+    const minhas = ordens.filter(o => o.autor === currentUser?.id).sort((a, b) => new Date(b.dataAbertura.split('/').reverse().join('-')) - new Date(a.dataAbertura.split('/').reverse().join('')));
     document.getElementById('minhasOrdensTable').innerHTML = minhas.map(o =>
         `<tr>
             <td>#${o.id}</td>
@@ -593,7 +671,7 @@ function loadMinhasOrdens() {
 }
 
 function loadOrdensPendentes() {
-    const pendentes = ordens.filter(o => o.status === 'pendente');
+    const pendentes = ordens.filter(o => o.status === 'pendente').sort((a, b) => new Date(b.dataAbertura.split('/').reverse().join('-')) - new Date(a.dataAbertura.split('/').reverse().join('')));
     document.getElementById('ordensPendentesTable').innerHTML = pendentes.map(o =>
         `<tr>
             <td>#${o.id}</td>
@@ -628,7 +706,7 @@ function loadPerfis() {
                 <td>${u.nome}</td>
                 <td>${u.email}</td>
                 <td>${roleLabel[u.tipo] || u.tipo}</td>
-                <td><button class="btn btn-sm btn-info" onclick="alert('Funcionário: ${u.nome}\\nE-mail: ${u.email}\\nCPF: ${u.cpf || '-'}\\nCargo: ${roleLabel[u.tipo] || u.tipo}')">Ver</button></td>
+                <td><button class="btn btn-sm btn-info" onclick="detalhesUsuario(${u.id})">Ver</button></td>
             </tr>`
         ).join('');
 
@@ -638,14 +716,14 @@ function loadPerfis() {
                 <td>${u.nome}</td>
                 <td>${u.email}</td>
                 <td>${roleLabel[u.tipo] || u.tipo}</td>
-                <td><button class="btn btn-sm btn-info" onclick="alert('Cliente: ${u.nome}\\nE-mail: ${u.email}\\nCPF: ${u.cpf || '-'}')">Ver</button></td>
+                <td><button class="btn btn-sm btn-info" onclick="detalhesUsuario(${u.id})">Ver</button></td>
             </tr>`
         ).join('');
 
         container.innerHTML = `
             <div class="sub-tabs" style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
-                <button class="btn ${currentTab === 'funcionarios' ? 'btn-primary active' : 'btn-secondary'}" data-tab="funcionarios">Perfil dos Funcionários</button>
-                <button class="btn ${currentTab === 'clientes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="clientes">Perfil dos Clientes</button>
+                <button class="btn ${currentTab === 'funcionarios' ? 'btn-primary active' : 'btn-secondary'}" data-tab="funcionarios">Perfil dos funcionários</button>
+                <button class="btn ${currentTab === 'clientes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="clientes">Perfil dos clientes</button>
             </div>
             <div class="table-container">
                 <table>
@@ -674,7 +752,7 @@ function loadPerfilUsuarios() {
             <td>${u.nome}</td>
             <td>${u.email}</td>
             <td>${roleLabel[u.tipo] || u.tipo}</td>
-            <td><button class="btn btn-sm btn-info" onclick="alert('Cliente: ${u.nome}\\nE-mail: ${u.email}\\nCPF: ${u.cpf || '-'}\\nTipo: ${roleLabel[u.tipo] || u.tipo}')">Ver</button></td>
+            <td><button class="btn btn-sm btn-info" onclick="detalhesUsuario(${u.id})">Ver</button></td>
         </tr>`
     ).join('');
 }
@@ -710,7 +788,7 @@ function loadPerfilFuncionarios() {
 }
 
 function loadHistoricoOrdens() {
-    const historico = ordens.filter(o => o.status === 'concluido' || o.status === 'expirado' || o.status === 'cancelado');
+    const historico = ordens.filter(o => o.status === 'concluido' || o.status === 'expirado' || o.status === 'cancelado').sort((a, b) => new Date(b.dataAbertura.split('/').reverse().join('-')) - new Date(a.dataAbertura.split('/').reverse().join('')));
     document.getElementById('historicoOrdensTable').innerHTML = historico.map(o =>
         `<tr>
             <td>#${o.id}</td>
@@ -742,6 +820,7 @@ function loadOrdensServicoAdministrativo() {
 
     let currentTab = 'pendentes';
     let searchTerm = '';
+    let sortOrder = 'desc';
 
     function render() {
         let ordensFiltradas = [];
@@ -750,8 +829,12 @@ function loadOrdensServicoAdministrativo() {
             ordensFiltradas = ordens.filter(o => o.status === 'pendente');
         } else if (currentTab === 'aprovacao') {
             ordensFiltradas = ordens.filter(o => o.status === 'aprovacao');
+        } else if (currentTab === 'execucao') {
+            ordensFiltradas = ordens.filter(o => o.status === 'em_execucao');
         } else if (currentTab === 'concluidos') {
             ordensFiltradas = ordens.filter(o => o.status === 'concluido');
+        } else if (currentTab === 'negados') {
+            ordensFiltradas = ordens.filter(o => o.status === 'negado');
         } else if (currentTab === 'expiradas') {
             ordensFiltradas = ordens.filter(o => o.status === 'expirado');
         }
@@ -766,11 +849,20 @@ function loadOrdensServicoAdministrativo() {
             );
         }
 
+        if (sortOrder) {
+            ordensFiltradas.sort((a, b) => {
+                const da = new Date(a.dataAbertura.split('/').reverse().join('-'));
+                const db = new Date(b.dataAbertura.split('/').reverse().join('-'));
+                return sortOrder === 'asc' ? da - db : db - da;
+            });
+        }
+
         function acoes(o) {
             if (currentTab === 'pendentes') {
                 return `
                     <button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>
-                    <button class="btn btn-sm btn-success" onclick="encaminharAprovacao(${o.id})">Encaminhar</button>`;
+                    <button class="btn btn-sm btn-success" onclick="encaminharAprovacao(${o.id})">Encaminhar</button>
+                    <button class="btn btn-sm btn-danger" onclick="negarOS(${o.id})">Negar</button>`;
             } else if (currentTab === 'aprovacao') {
                 return `
                     <button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Detalhes</button>
@@ -779,6 +871,8 @@ function loadOrdensServicoAdministrativo() {
             }
             return `<button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>`;
         }
+
+        const seta = sortOrder === 'asc' ? '&#9650;' : sortOrder === 'desc' ? '&#9660;' : '&#9654;';
 
         const linhas = ordensFiltradas.map(o => `
             <tr>
@@ -796,14 +890,16 @@ function loadOrdensServicoAdministrativo() {
                 <input type="text" id="adminOrdensSearch" placeholder="Pesquisar por ID, cliente, tipo ou descrição..." style="width:100%;padding:10px;border:1px solid var(--gray);border-radius:8px;">
             </div>
             <div class="sub-tabs" style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
-                <button class="btn ${currentTab === 'pendentes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="pendentes">Serviços Pendentes</button>
-                <button class="btn ${currentTab === 'aprovacao' ? 'btn-primary active' : 'btn-secondary'}" data-tab="aprovacao">Em Espera de Aprovação</button>
-                <button class="btn ${currentTab === 'concluidos' ? 'btn-primary active' : 'btn-secondary'}" data-tab="concluidos">Serviços Concluídos</button>
-                <button class="btn ${currentTab === 'expiradas' ? 'btn-primary active' : 'btn-secondary'}" data-tab="expiradas">Ordens Expiradas</button>
+                <button class="btn ${currentTab === 'pendentes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="pendentes">Pendentes</button>
+                <button class="btn ${currentTab === 'aprovacao' ? 'btn-primary active' : 'btn-secondary'}" data-tab="aprovacao">Em espera de aprovação</button>
+                <button class="btn ${currentTab === 'execucao' ? 'btn-primary active' : 'btn-secondary'}" data-tab="execucao">Em execução</button>
+                <button class="btn ${currentTab === 'concluidos' ? 'btn-primary active' : 'btn-secondary'}" data-tab="concluidos">Concluídos</button>
+                <button class="btn ${currentTab === 'negados' ? 'btn-primary active' : 'btn-secondary'}" data-tab="negados">Negados</button>
+                <button class="btn ${currentTab === 'expiradas' ? 'btn-primary active' : 'btn-secondary'}" data-tab="expiradas">Expiradas</button>
             </div>
             <div class="table-container">
                 <table>
-                    <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th><th>Ações</th></tr></thead>
+                    <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th id="adminSortHeader" style="cursor:pointer;user-select:none;">Abertura <span id="adminSortArrow">${seta}</span></th><th>Ações</th></tr></thead>
                     <tbody>${linhas || '<tr><td colspan="6" style="text-align:center;color:var(--gray);">Nenhuma ordem encontrada.</td></tr>'}</tbody>
                 </table>
             </div>
@@ -822,6 +918,14 @@ function loadOrdensServicoAdministrativo() {
             searchTerm = this.value;
             render();
         });
+
+        const sortHeader = document.getElementById('adminSortHeader');
+        if (sortHeader) {
+            sortHeader.addEventListener('click', function() {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                render();
+            });
+        }
     }
 
     render();
@@ -833,12 +937,14 @@ function loadOrdensServicoAnalista() {
 
     let currentTab = 'pendentes';
     let searchTerm = '';
+    let sortOrder = 'desc';
 
     function acoes(o) {
         if (currentTab === 'pendentes') {
             return `
                 <button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>
-                <button class="btn btn-sm btn-success" onclick="encaminharAprovacao(${o.id})">Encaminhar</button>`;
+                <button class="btn btn-sm btn-success" onclick="encaminharAprovacao(${o.id})">Encaminhar</button>
+                <button class="btn btn-sm btn-danger" onclick="negarOS(${o.id})">Negar</button>`;
         }
         return `<button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>`;
     }
@@ -850,8 +956,12 @@ function loadOrdensServicoAnalista() {
             ordensFiltradas = ordens.filter(o => o.status === 'pendente');
         } else if (currentTab === 'aprovacao') {
             ordensFiltradas = ordens.filter(o => o.status === 'aprovacao');
+        } else if (currentTab === 'execucao') {
+            ordensFiltradas = ordens.filter(o => o.status === 'em_execucao');
         } else if (currentTab === 'concluidos') {
             ordensFiltradas = ordens.filter(o => o.status === 'concluido');
+        } else if (currentTab === 'negados') {
+            ordensFiltradas = ordens.filter(o => o.status === 'negado');
         } else if (currentTab === 'expiradas') {
             ordensFiltradas = ordens.filter(o => o.status === 'expirado');
         }
@@ -865,6 +975,16 @@ function loadOrdensServicoAnalista() {
                 (o.descricao || '').toLowerCase().includes(term)
             );
         }
+
+        if (sortOrder) {
+            ordensFiltradas.sort((a, b) => {
+                const da = new Date(a.dataAbertura.split('/').reverse().join('-'));
+                const db = new Date(b.dataAbertura.split('/').reverse().join('-'));
+                return sortOrder === 'asc' ? da - db : db - da;
+            });
+        }
+
+        const seta = sortOrder === 'asc' ? '&#9650;' : sortOrder === 'desc' ? '&#9660;' : '&#9654;';
 
         const linhas = ordensFiltradas.map(o => `
             <tr>
@@ -882,14 +1002,16 @@ function loadOrdensServicoAnalista() {
                 <input type="text" id="analistaSearch" placeholder="Pesquisar por ID, cliente, tipo ou descrição..." style="width:100%;padding:10px;border:1px solid var(--gray);border-radius:8px;">
             </div>
             <div class="sub-tabs" style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
-                <button class="btn ${currentTab === 'pendentes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="pendentes">Serviços Pendentes</button>
-                <button class="btn ${currentTab === 'aprovacao' ? 'btn-primary active' : 'btn-secondary'}" data-tab="aprovacao">Em Espera de Aprovação</button>
-                <button class="btn ${currentTab === 'concluidos' ? 'btn-primary active' : 'btn-secondary'}" data-tab="concluidos">Serviços Concluídos</button>
-                <button class="btn ${currentTab === 'expiradas' ? 'btn-primary active' : 'btn-secondary'}" data-tab="expiradas">Ordens Expiradas</button>
+                <button class="btn ${currentTab === 'pendentes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="pendentes">Pendentes</button>
+                <button class="btn ${currentTab === 'aprovacao' ? 'btn-primary active' : 'btn-secondary'}" data-tab="aprovacao">Em espera de aprovação</button>
+                <button class="btn ${currentTab === 'execucao' ? 'btn-primary active' : 'btn-secondary'}" data-tab="execucao">Em execução</button>
+                <button class="btn ${currentTab === 'concluidos' ? 'btn-primary active' : 'btn-secondary'}" data-tab="concluidos">Concluídos</button>
+                <button class="btn ${currentTab === 'negados' ? 'btn-primary active' : 'btn-secondary'}" data-tab="negados">Negados</button>
+                <button class="btn ${currentTab === 'expiradas' ? 'btn-primary active' : 'btn-secondary'}" data-tab="expiradas">Expiradas</button>
             </div>
             <div class="table-container">
                 <table>
-                    <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th><th>Ações</th></tr></thead>
+                    <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th id="analistaSortHeader" style="cursor:pointer;user-select:none;">Abertura <span id="analistaSortArrow">${seta}</span></th><th>Ações</th></tr></thead>
                     <tbody>${linhas || '<tr><td colspan="6" style="text-align:center;color:var(--gray);">Nenhuma ordem encontrada.</td></tr>'}</tbody>
                 </table>
             </div>
@@ -908,6 +1030,14 @@ function loadOrdensServicoAnalista() {
             searchTerm = this.value;
             render();
         });
+
+        const sortHeader = document.getElementById('analistaSortHeader');
+        if (sortHeader) {
+            sortHeader.addEventListener('click', function() {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                render();
+            });
+        }
     }
 
     render();
@@ -917,14 +1047,15 @@ function loadOrdensServicoOperacional() {
     const container = document.getElementById('ordensServicoOperacionalContent');
     if (!container) return;
 
-    let currentTab = 'pendentes';
+    let currentTab = 'em_execucao';
     let searchTerm = '';
+    let sortOrder = 'desc';
 
     function render() {
         let ordensFiltradas = ordens.filter(o => {
-            if (currentTab === 'pendentes') return o.status === 'pendente';
+            if (currentTab === 'em_execucao') return o.status === 'em_execucao';
             if (currentTab === 'atraso') return o.status === 'atraso';
-            if (currentTab === 'todas') return o.executor === currentUser?.id;
+            if (currentTab === 'todas') return o.executor === currentUser?.id && !['concluido', 'expirado', 'falha'].includes(o.status);
             return false;
         });
 
@@ -937,6 +1068,16 @@ function loadOrdensServicoOperacional() {
                 (o.descricao || '').toLowerCase().includes(term)
             );
         }
+
+        if (sortOrder) {
+            ordensFiltradas.sort((a, b) => {
+                const da = new Date(a.dataAbertura.split('/').reverse().join('-'));
+                const db = new Date(b.dataAbertura.split('/').reverse().join('-'));
+                return sortOrder === 'asc' ? da - db : db - da;
+            });
+        }
+
+        const seta = sortOrder === 'asc' ? '&#9650;' : sortOrder === 'desc' ? '&#9660;' : '&#9654;';
 
         const linhas = ordensFiltradas.map(o => `
             <tr>
@@ -957,13 +1098,13 @@ function loadOrdensServicoOperacional() {
                 <input type="text" id="osOperacionalSearch" placeholder="Pesquisar por ID, cliente, tipo ou descrição..." style="width:100%;padding:10px;border:1px solid var(--gray);border-radius:8px;">
             </div>
             <div class="sub-tabs" style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
-                <button class="btn ${currentTab === 'pendentes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="pendentes">Pendentes</button>
+                <button class="btn ${currentTab === 'em_execucao' ? 'btn-primary active' : 'btn-secondary'}" data-tab="em_execucao">Em execução</button>
                 <button class="btn ${currentTab === 'atraso' ? 'btn-primary active' : 'btn-secondary'}" data-tab="atraso">Em atraso</button>
                 <button class="btn ${currentTab === 'todas' ? 'btn-primary active' : 'btn-secondary'}" data-tab="todas">Todas</button>
             </div>
             <div class="table-container">
                 <table>
-                    <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th><th>Ações</th></tr></thead>
+                    <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th id="operacionalSortHeader" style="cursor:pointer;user-select:none;">Abertura <span id="operacionalSortArrow">${seta}</span></th><th>Ações</th></tr></thead>
                     <tbody>${linhas || '<tr><td colspan="6" style="text-align:center;color:var(--gray);">Nenhuma ordem encontrada.</td></tr>'}</tbody>
                 </table>
             </div>
@@ -980,6 +1121,14 @@ function loadOrdensServicoOperacional() {
             searchTerm = this.value;
             render();
         });
+
+        const sortHeader = document.getElementById('operacionalSortHeader');
+        if (sortHeader) {
+            sortHeader.addEventListener('click', function() {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                render();
+            });
+        }
     }
 
     render();
@@ -996,6 +1145,83 @@ function loadServicosExecutados() {
             <td><span class="status-badge status-concluido">Concluído</span></td>
         </tr>`
     ).join('');
+}
+
+function loadHistoricoServicosOperacional() {
+    const container = document.getElementById('historicoServicosOperacionalContent');
+    if (!container) return;
+
+    let searchTerm = '';
+    let sortOrder = 'desc';
+
+    function render() {
+        let ordensFiltradas = ordens.filter(o =>
+            o.executor === currentUser?.id && ['concluido', 'expirado', 'falha'].includes(o.status)
+        );
+
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            ordensFiltradas = ordensFiltradas.filter(o =>
+                String(o.id).includes(term) ||
+                getClienteNome(o.cliente).toLowerCase().includes(term) ||
+                getTipoLabel(o.tipo).toLowerCase().includes(term) ||
+                (o.descricao || '').toLowerCase().includes(term)
+            );
+        }
+
+        if (sortOrder) {
+            ordensFiltradas.sort((a, b) => {
+                const da = new Date(a.dataAbertura.split('/').reverse().join('-'));
+                const db = new Date(b.dataAbertura.split('/').reverse().join('-'));
+                return sortOrder === 'asc' ? da - db : db - da;
+            });
+        }
+
+        const seta = sortOrder === 'asc' ? '&#9650;' : sortOrder === 'desc' ? '&#9660;' : '&#9654;';
+
+        const linhas = ordensFiltradas.map(o => `
+            <tr>
+                <td>#${o.id}</td>
+                <td>${getClienteNome(o.cliente)}</td>
+                <td>${getTipoLabel(o.tipo)}</td>
+                <td><span class="status-badge status-${renderStatusBadgeClasse(o.status)}">${getStatusLabel(o.status)}</span></td>
+                <td>${formatDate(o.dataConclusao || o.dataAbertura)}</td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>
+                </td>
+            </tr>
+        `).join('');
+
+        container.innerHTML = `
+            <div class="search-bar" style="margin-bottom:15px;">
+                <input type="text" id="historicoOperacionalSearch" placeholder="Pesquisar por ID, cliente, tipo ou descrição..." style="width:100%;padding:10px;border:1px solid var(--gray);border-radius:8px;">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th id="historicoSortHeader" style="cursor:pointer;user-select:none;">Conclusão <span id="historicoSortArrow">${seta}</span></th><th>Ações</th></tr></thead>
+                    <tbody>${linhas || '<tr><td colspan="6" style="text-align:center;color:var(--gray);">Nenhum serviço no histórico.</td></tr>'}</tbody>
+                </table>
+            </div>
+        `;
+
+        const searchInput = document.getElementById('historicoOperacionalSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                searchTerm = this.value;
+                render();
+            });
+        }
+
+        const sortHeader = document.getElementById('historicoSortHeader');
+        if (sortHeader) {
+            sortHeader.addEventListener('click', function() {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                render();
+            });
+        }
+    }
+
+    render();
 }
 
 // AC: Buscar Ordens
@@ -1058,9 +1284,18 @@ function confirmarEncaminhar(id) {
     if (os) {
         os.status = 'aprovacao';
         saveData();
-        addNotification('OS encaminhada', `A OS #${id} foi encaminhada para aprovação.`);
+        if (currentUser?.tipo === 'analista') {
+            addNotification('OS encaminhada', `A OS #${id} foi encaminhada para aprovação.`, getUserIdsByRole('administrativo'));
+        } else if (currentUser?.tipo === 'administrativo') {
+            if (os.autor !== currentUser?.id) {
+                addNotification('OS encaminhada', `A OS #${id} foi encaminhada para aprovação.`, [os.autor]);
+            }
+        } else {
+            addNotification('OS encaminhada', `A OS #${id} foi encaminhada para aprovação.`, getUserIdsByRole('analista'));
+        }
+        showToast(`OS #${id} encaminhada para aprovação.`, 'success');
         closeModal('encaminharModal');
-        loadOrdensPendentes();
+        refreshCurrentList();
     }
 }
 
@@ -1108,22 +1343,22 @@ function aprovarOS(id) {
 function confirmarAprovacao(id) {
     const opId = document.getElementById('aprovarOpSelect').value;
     if (!opId) {
-        alert('Selecione um operacional responsável antes de aprovar.');
+        showToast('Selecione um operacional responsável antes de aprovar.', 'error');
         return;
     }
     const os = ordens.find(o => o.id === id);
     if (os) {
-        os.status = 'pendente';
+        os.status = 'em_execucao';
         os.executor = parseInt(opId);
         saveData();
 
         const op = usuarios.find(u => u.id === parseInt(opId));
-        addNotification('OS aprovada', `A OS #${id} foi aprovada e designada a ${op ? op.nome : 'operacional'}.`);
-        addNotification('Nova OS atribuída', `A OS #${id} foi atribuída a você.`);
+        addNotification('OS aprovada', `A OS #${id} foi aprovada e designada a ${op ? op.nome : 'operacional'}.`, [os.autor]);
+        addNotification('Nova OS atribuída', `A OS #${id} foi atribuída a você.`, [parseInt(opId)]);
+        showToast(`OS #${id} aprovada e designada a ${op ? op.nome : 'operacional'}.`, 'success');
 
         closeModal('aprovarModal');
-        loadServicosAprovacao();
-        loadHomeAdministrativo();
+        refreshCurrentList();
     }
 }
 
@@ -1164,18 +1399,19 @@ function negarOS(id) {
 function confirmarNegacao(id) {
     const motivo = document.getElementById('negarMotivo').value;
     if (!motivo) {
-        alert('Informe o motivo da negação.');
+        showToast('Informe o motivo da negação.', 'error');
         return;
     }
     const os = ordens.find(o => o.id === id);
     if (os) {
-        os.status = 'cancelado';
+        os.status = 'negado';
         os.motivoNegacao = motivo;
         os.dataConclusao = hoje();
         saveData();
-        addNotification('OS negada', `A OS #${id} foi negada. Motivo: ${motivo}`);
+        addNotification('OS negada', `A OS #${id} foi negada. Motivo: ${motivo}`, [os.autor]);
+        showToast(`OS #${id} negada.`, 'error');
         closeModal('negarModal');
-        loadServicosAprovacao();
+        refreshCurrentList();
     }
 }
 
@@ -1194,13 +1430,13 @@ function handleCancelarOS(e) {
     if (!os) return;
 
     if (os.status !== 'em_aberto' && os.status !== 'pendente') {
-        alert('Esta OS não pode ser cancelada pois não está mais em aberto.');
+        showToast('Esta OS não pode ser cancelada pois não está mais em aberto.', 'error');
         closeModal('cancelModal');
         return;
     }
 
     if (os.autor !== currentUser?.id) {
-        alert('Você não pode cancelar esta OS pois não foi o autor do pedido.');
+        showToast('Você não pode cancelar esta OS pois não foi o autor do pedido.', 'error');
         closeModal('cancelModal');
         return;
     }
@@ -1209,11 +1445,11 @@ function handleCancelarOS(e) {
     os.motivoCancelamento = motivo;
     os.dataConclusao = hoje();
     saveData();
-    addNotification('OS cancelada', `A OS #${id} foi cancelada. Motivo: ${motivo}`);
+    addNotification('OS cancelada', `A OS #${id} foi cancelada. Motivo: ${motivo}`, getUserIdsByRole('administrativo'));
     closeModal('cancelModal');
     document.getElementById('cancelForm').reset();
-    loadMinhasOrdens();
-    alert('Cancelamento solicitado com sucesso!');
+    refreshCurrentList();
+    showToast('Cancelamento solicitado com sucesso!', 'success');
 }
 
 // OP: Atualizar OS (modal com sucesso/falha, descrição e imagens)
@@ -1289,19 +1525,22 @@ function abrirModalAtualizar(id) {
             os.dataConclusao = hoje();
 
             saveData();
-            addNotification('OS atualizada', `A OS #${id} foi atualizada com status: ${resultado === 'sucesso' ? 'Sucesso' : 'Falha'}.`);
+            const userIdCliente = getUserIdByClienteId(os.cliente);
+            const destAtualizar = [os.autor, ...getUserIdsByRole('administrativo')];
+            if (userIdCliente && !destAtualizar.includes(userIdCliente)) destAtualizar.push(userIdCliente);
+            addNotification('OS atualizada', `A OS #${id} foi atualizada com status: ${resultado === 'sucesso' ? 'Concluído' : 'Falha'}.`, destAtualizar);
 
             setLoading(btn, false);
             closeModal(modalId);
-            loadOrdensPendentes();
-            alert('OS atualizada com sucesso!');
+            refreshCurrentList();
+            showToast('OS atualizada com sucesso!', 'success');
         });
     });
 
     openModal(modalId);
 }
 
-// Solicitação de Serviço (com fluxo AC e anexo)
+// Solicitação de Serviço (com fluxo AC, anexo e confirmação)
 function handleSolicitarServico(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button[type="submit"]');
@@ -1322,6 +1561,7 @@ function handleSolicitarServico(e) {
     }
 
     let clienteId = currentUser?.id || 1;
+    let novoClienteData = null;
 
     if (podeReferenciar) {
         const possuiConta = document.getElementById('acClientePossuiConta').value;
@@ -1350,44 +1590,99 @@ function handleSolicitarServico(e) {
                 return;
             }
             clienteId = clientes.length > 0 ? Math.max(...clientes.map(c => c.id)) + 1 : 1;
-            clientes.push({ id: clienteId, nome, documento: cpf, telefone: '', email, endereco: '' });
+            novoClienteData = { id: clienteId, nome, documento: cpf, telefone: '', email, endereco: '' };
         }
     }
 
     lerImagemBase64(fileInput.files[0]).then(imagemBase64 => {
-        const newOS = {
-            id: ordens.length > 0 ? Math.max(...ordens.map(o => o.id)) + 1 : 1,
-            cliente: clienteId,
-            tipo,
-            descricao,
-            imagem: imagemBase64,
-            executor: null,
-            status: isAC ? 'aprovacao' : 'pendente', // analista → aprovacao; admin/cliente → pendente
-            autor: currentUser?.id || clienteId,
-            dataAbertura: hoje(),
-            dataConclusao: null
-        };
+        setLoading(btn, false);
 
-        ordens.push(newOS);
-        saveData();
-
-        if (isAC) {
-            addNotification('OS solicitada', `Uma nova OS #${newOS.id} foi solicitada e aguarda aprovação.`);
-        } else if (isAdmin) {
-            addNotification('OS registrada', `A OS #${newOS.id} foi criada e encaminhada.`);
+        let clienteNome;
+        if (podeReferenciar && novoClienteData) {
+            clienteNome = novoClienteData.nome;
+        } else if (podeReferenciar) {
+            clienteNome = getClienteNome(clienteId);
         } else {
-            addNotification('Solicitação enviada', `Sua solicitação #${newOS.id} foi recebida.`);
+            clienteNome = currentUser?.nome || 'N/A';
         }
 
-        document.getElementById('solServicoForm').reset();
-        document.getElementById('solImagemPreview').style.display = 'none';
-        document.getElementById('fileUploadArea').classList.remove('has-image');
-        document.getElementById('solServicoError').style.display = 'none';
-        setLoading(btn, false);
-        if (isAC) alert('OS solicitada com sucesso! Aguarda aprovação.');
-        else if (isAdmin) alert('OS criada com sucesso!');
-        else alert('Solicitação enviada com sucesso!');
+        const modalId = 'confirmarSolicitacaoModal';
+        criarModal(modalId, 'Confirmar Solicitação');
+        document.getElementById(`${modalId}Content`).innerHTML = `
+            <div style="margin-bottom:20px;">
+                <p style="margin-bottom:8px;"><strong>Tipo de serviço:</strong> ${getTipoLabel(tipo)}</p>
+                <p style="margin-bottom:8px;"><strong>Descrição:</strong> ${descricao}</p>
+                <p style="margin-bottom:8px;"><strong>Cliente:</strong> ${clienteNome}</p>
+                ${imagemBase64 ? `<p style="margin-bottom:8px;"><strong>Imagem anexada:</strong></p><img src="${imagemBase64}" style="max-width:200px;max-height:150px;border-radius:8px;margin-top:4px;object-fit:cover;">` : ''}
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--gray);padding-top:16px;">
+                <button class="btn btn-secondary" onclick="closeModal('${modalId}')">Cancelar</button>
+                <button class="btn btn-success" id="confirmarEnvioBtn">Confirmar Envio</button>
+            </div>
+        `;
+
+        document.getElementById('confirmarEnvioBtn').addEventListener('click', function() {
+            closeModal(modalId);
+            setLoading(btn, true);
+            if (novoClienteData) clientes.push(novoClienteData);
+
+            const newOS = {
+                id: ordens.length > 0 ? Math.max(...ordens.map(o => o.id)) + 1 : 1,
+                cliente: clienteId,
+                tipo,
+                descricao,
+                imagem: imagemBase64,
+                executor: null,
+                status: isAC ? 'aprovacao' : 'pendente',
+                autor: currentUser?.id || clienteId,
+                dataAbertura: hoje(),
+                dataConclusao: null
+            };
+
+            ordens.push(newOS);
+            saveData();
+
+            if (isAC) {
+                addNotification('OS solicitada', `Uma nova OS #${newOS.id} foi solicitada e aguarda aprovação.`, getUserIdsByRole('administrativo'));
+            } else if (isAdmin) {
+                addNotification('OS registrada', `A OS #${newOS.id} foi criada e encaminhada.`, getUserIdsByRole('analista'));
+            } else {
+                addNotification('Solicitação enviada', `Sua solicitação #${newOS.id} foi recebida.`);
+                addNotification('Nova OS recebida', `Uma nova OS #${newOS.id} foi solicitada por ${currentUser?.nome}.`, getUserIdsByRole('analista'));
+            }
+
+            document.getElementById('solServicoForm').reset();
+            document.getElementById('solImagemPreview').style.display = 'none';
+            document.getElementById('fileUploadArea').classList.remove('has-image');
+            document.getElementById('solServicoError').style.display = 'none';
+            setLoading(btn, false);
+            refreshCurrentList();
+            if (isAC) showToast('OS solicitada com sucesso! Aguarda aprovação.', 'success');
+            else if (isAdmin) showToast('OS criada com sucesso!', 'success');
+            else showToast('Solicitação enviada com sucesso!', 'success');
+        });
+
+        openModal(modalId);
     });
+}
+
+function detalhesUsuario(id) {
+    const u = usuarios.find(user => user.id === id);
+    if (!u) return;
+    criarModal('detalhesUsuarioModal', 'Detalhes do Usuário');
+    document.getElementById('detalhesUsuarioModalContent').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:12px;">
+            <p><strong>Nome:</strong> ${u.nome}</p>
+            <p><strong>E-mail:</strong> ${u.email}</p>
+            <p><strong>CPF:</strong> ${u.cpf || '-'}</p>
+            <p><strong>Cargo:</strong> ${roleLabel[u.tipo] || u.tipo}</p>
+            ${u.tipo === 'cliente' ? `<p><strong>Telefone:</strong> ${u.telefone || '-'}</p><p><strong>Endereço:</strong> ${u.endereco || '-'}</p>` : ''}
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+            <button class="btn btn-secondary" onclick="closeModal('detalhesUsuarioModal')">Fechar</button>
+        </div>
+    `;
+    openModal('detalhesUsuarioModal');
 }
 
 function viewOS(id) {
