@@ -26,43 +26,35 @@ let currentPage = null;
 // ---- Seção 2: Configuração ----
 const roleMenu = {
     cliente: [
-        { label: 'Início', page: 'home-cliente' },
-        { label: 'Solicitação de serviços', page: 'solicitacao-servico' },
-        { label: 'Minhas solicitações', page: 'minhas-ordens' },
-        { label: 'Notificações', page: 'notificacoes' },
-        { label: 'Perfil', page: 'perfil' }
+        { label: 'Início', page: 'home-cliente', icon: 'home' },
+        { label: 'Solicitação de Serviços', page: 'solicitacao-servico', icon: 'file-plus' },
+        { label: 'Minhas Solicitações', page: 'minhas-ordens', icon: 'clipboard-list' },
+        { label: 'Notificações', page: 'notificacoes', icon: 'bell' },
+        { label: 'Perfil', page: 'perfil', icon: 'user' }
     ],
     analista: [
-        { label: 'Início', page: 'home-analista' },
-        { label: 'Solicitação de serviços', page: 'solicitacao-servico' },
-        { label: 'Buscar Ordens', page: 'busca-os' },
-        { label: 'Notificações', page: 'notificacoes' },
-        { label: 'Perfil', page: 'perfil' },
-        { label: 'Serviços Pendentes', page: 'ordens-pendentes' },
-        { label: 'Documentação', page: 'documentacao' },
-        { label: 'Perfil dos usuários', page: 'perfil-usuarios' }
+        { label: 'Início', page: 'home-analista', icon: 'home' },
+        { label: 'Notificações', page: 'notificacoes', icon: 'bell' },
+        { label: 'Solicitação de Serviços', page: 'solicitacao-servico', icon: 'file-plus' },
+        { label: 'Ordens de Serviço', page: 'ordens-servico-analista', icon: 'clipboard-list' },
+        { label: 'Perfil dos Clientes', page: 'perfil-usuarios', icon: 'users' },
+        { label: 'Documentação', page: 'documentacao', icon: 'file-text' }
     ],
     administrativo: [
-        { label: 'Início', page: 'home-administrativo' },
-        { label: 'Solicitação de serviços', page: 'solicitacao-servico' },
-        { label: 'Notificações', page: 'notificacoes' },
-        { label: 'Perfil', page: 'perfil' },
-        { label: 'Serviços Pendentes', page: 'ordens-pendentes' },
-        { label: 'Serviços em Espera de Aprovação', page: 'servicos-aprovacao' },
-        { label: 'Serviços concluídos', page: 'servicos-executados' },
-        { label: 'Documentação', page: 'documentacao' },
-        { label: 'Perfil dos usuários', page: 'perfil-usuarios' },
-        { label: 'Perfil dos funcionários', page: 'perfil-funcionarios' },
-        { label: 'Histórico de Ordens', page: 'historico-ordens' },
-        { label: 'Ordens expiradas', page: 'ordens-expiradas' }
+        { label: 'Início', page: 'home-administrativo', icon: 'home' },
+        { label: 'Notificações', page: 'notificacoes', icon: 'bell' },
+        { label: 'Solicitação de Serviços', page: 'solicitacao-servico', icon: 'file-plus' },
+        { label: 'Ordens de Serviço', page: 'ordens-servico-administrativo', icon: 'clipboard-list' },
+        { label: 'Histórico de Ordens', page: 'historico-ordens', icon: 'archive' },
+        { label: 'Perfis', page: 'perfis', icon: 'users' },
+        { label: 'Documentação', page: 'documentacao', icon: 'file-text' }
     ],
     operacional: [
-        { label: 'Início', page: 'home-operacional' },
-        { label: 'Ordens de Serviço', page: 'ordens-servico-operacional' },
-        { label: 'Perfil', page: 'perfil' },
-        { label: 'Notificações', page: 'notificacoes' },
-        { label: 'Documentação', page: 'documentacao' },
-        { label: 'Serviços executados', page: 'servicos-executados' }
+        { label: 'Início', page: 'home-operacional', icon: 'home' },
+        { label: 'Notificações', page: 'notificacoes', icon: 'bell' },
+        { label: 'Ordens de Serviço', page: 'ordens-servico-operacional', icon: 'clipboard-list' },
+        { label: 'Serviços Executados', page: 'servicos-executados', icon: 'check-circle' },
+        { label: 'Documentação', page: 'documentacao', icon: 'file-text' }
     ]
 };
 
@@ -129,6 +121,9 @@ function generateSampleOrders() {
         { id: 10, cliente: 5, tipo: 'refaturamento', descricao: 'Refaturamento solicitado devido a erro na leitura', executor: 2, status: 'concluido', dataAbertura: diasAtras(10), dataConclusao: diasAtras(9), imagem: null, autor: 2 },
         { id: 11, cliente: 1, tipo: 'desobstrucao_retorno', descricao: 'Retorno de esgoto no imóvel', executor: 3, status: 'pendente', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 4 },
         { id: 12, cliente: 3, tipo: 'troca_titularidade', descricao: 'Troca de titularidade do imóvel', executor: null, status: 'aprovacao', dataAbertura: diasAtras(1), dataConclusao: null, imagem: null, autor: 2 },
+        { id: 13, cliente: 5, tipo: 'vazamento_passeio', descricao: 'Solicitado por cliente - vazamento na calçada', executor: null, status: 'pendente', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 4 },
+        { id: 14, cliente: 2, tipo: 'troca_cavalete', descricao: 'Solicitado por analista - cavalete danificado', executor: null, status: 'aprovacao', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 2 },
+        { id: 15, cliente: 4, tipo: 'desobstrucao_esgoto', descricao: 'Solicitado por administrativo - esgoto retornando', executor: null, status: 'pendente', dataAbertura: diasAtras(0), dataConclusao: null, imagem: null, autor: 1 },
     ];
 }
 
@@ -191,12 +186,14 @@ function showPage(pageId) {
     const el = document.getElementById(pageId);
     if (el) el.classList.add('active');
 
-    document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-    const link = document.querySelector(`.sidebar-menu a[data-page="${pageId}"]`);
+    document.querySelectorAll('#sidebarMenu a').forEach(a => a.classList.remove('active'));
+    const link = document.querySelector(`#sidebarMenu a[data-page="${pageId}"]`);
     if (link) link.classList.add('active');
 
     currentPage = pageId;
     loadPageContent(pageId);
+
+    if (window.innerWidth < 1024) closeSidebar();
 }
 
 function updateSidebar(role) {
@@ -204,8 +201,9 @@ function updateSidebar(role) {
     if (!menu) return;
     const sidebar = document.getElementById('sidebarMenu');
     sidebar.innerHTML = menu.map(item =>
-        `<li><a data-page="${item.page}" onclick="showPage('${item.page}')">${item.label}</a></li>`
+        `<li><a data-page="${item.page}" onclick="showPage('${item.page}')" class="flex items-center gap-3 px-5 py-4 text-gray-600 hover:bg-gray-50 hover:text-blue-600 hover:border-l-4 hover:border-blue-600 transition-all cursor-pointer"><i data-lucide="${item.icon || 'circle'}" class="w-5 h-5 flex-shrink-0"></i> ${item.label}</a></li>`
     ).join('');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 function logout() {
@@ -218,6 +216,26 @@ function logout() {
 
 function openModal(id) { document.getElementById(id).classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// Mobile sidebar
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    const isOpen = sidebar.classList.contains('translate-x-0');
+    sidebar.classList.toggle('translate-x-0', !isOpen);
+    sidebar.classList.toggle('-translate-x-full', isOpen);
+    backdrop.classList.toggle('hidden', isOpen);
+    document.body.classList.toggle('overflow-hidden', !isOpen);
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    sidebar.classList.remove('translate-x-0');
+    sidebar.classList.add('-translate-x-full');
+    backdrop.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
 
 // ---- Seção 6: Utilitários ----
 function criarModal(id, titulo) {
@@ -323,6 +341,8 @@ function setupEventListeners() {
     document.getElementById('cadastroForm').addEventListener('submit', handleCadastro);
     document.getElementById('cancelForm').addEventListener('submit', handleCancelarOS);
 
+    document.getElementById('userBadge').addEventListener('click', showUserProfile);
+
     document.getElementById('solImagem').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -413,14 +433,17 @@ function loadPageContent(pageId) {
         case 'home-administrativo': loadHomeAdministrativo(); break;
         case 'home-operacional': loadHomeOperacional(); break;
         case 'notificacoes': loadNotificacoes(); break;
-        case 'perfil': loadPerfil(); break;
+        case 'perfil': showUserProfile(); break;
         case 'ordens-pendentes': loadOrdensPendentes(); break;
         case 'perfil-usuarios': loadPerfilUsuarios(); break;
         case 'servicos-aprovacao': loadServicosAprovacao(); break;
         case 'perfil-funcionarios': loadPerfilFuncionarios(); break;
         case 'historico-ordens': loadHistoricoOrdens(); break;
         case 'ordens-expiradas': loadOrdensExpiradas(); break;
+        case 'perfis': loadPerfis(); break;
+        case 'ordens-servico-analista': loadOrdensServicoAnalista(); break;
         case 'ordens-servico-operacional': loadOrdensServicoOperacional(); break;
+        case 'ordens-servico-administrativo': loadOrdensServicoAdministrativo(); break;
         case 'servicos-executados': loadServicosExecutados(); break;
         case 'minhas-ordens': loadMinhasOrdens(); break;
         case 'solicitacao-servico': loadSolicitacaoServico(); break;
@@ -428,7 +451,7 @@ function loadPageContent(pageId) {
 }
 
 function loadSolicitacaoServico() {
-    const isAC = currentRole === 'analista';
+    const isAC = currentRole === 'analista' || currentRole === 'administrativo';
     document.getElementById('acClienteSection').style.display = isAC ? 'block' : 'none';
 }
 
@@ -506,11 +529,22 @@ function loadHomeOperacional() {
 function loadNotificacoes() {
     document.getElementById('notificationsList').innerHTML = notifications.map(n =>
         `<div class="notification-item ${n.lida ? '' : 'unread'}">
-            <h4>${n.titulo}</h4>
-            <p>${n.mensagem}</p>
-            <small style="color:var(--gray);">${n.data}</small>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                    <h4>${n.titulo}</h4>
+                    <p>${n.mensagem}</p>
+                    <small style="color:var(--gray);">${n.data}</small>
+                </div>
+                <button class="btn btn-sm btn-danger" onclick="excluirNotificacao(${n.id})" style="margin-left:10px;flex-shrink:0;" title="Excluir notificação">🗑</button>
+            </div>
         </div>`
     ).join('');
+}
+
+function excluirNotificacao(id) {
+    notifications = notifications.filter(n => n.id !== id);
+    saveData();
+    loadNotificacoes();
 }
 
 function loadPerfil() {
@@ -519,6 +553,25 @@ function loadPerfil() {
     document.getElementById('perfilEmail').innerHTML = `<strong>E-mail:</strong> ${currentUser.email}`;
     document.getElementById('perfilCPF').innerHTML = `<strong>CPF:</strong> ${currentUser.cpf || '-'}`;
     document.getElementById('perfilTipo').innerHTML = `<strong>Tipo:</strong> ${roleLabel[currentRole] || currentUser.tipo}`;
+}
+
+function showUserProfile() {
+    if (!currentUser) return;
+    criarModal('profileModal', 'Meu Perfil');
+    document.getElementById('profileModalContent').innerHTML = `
+        <div class="info-page">
+            <div class="info-card">
+                <p><strong>Nome:</strong> ${currentUser.nome}</p>
+                <p><strong>E-mail:</strong> ${currentUser.email}</p>
+                <p><strong>CPF:</strong> ${currentUser.cpf || '-'}</p>
+                <p><strong>Tipo:</strong> ${roleLabel[currentRole] || currentUser.tipo}</p>
+            </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:15px;">
+            <button class="btn btn-secondary" onclick="closeModal('profileModal')">Fechar</button>
+        </div>
+    `;
+    openModal('profileModal');
 }
 
 // ---- Seção 9: Listagens ----
@@ -559,14 +612,69 @@ function loadOrdensPendentes() {
     ).join('');
 }
 
+function loadPerfis() {
+    const container = document.getElementById('perfisContainer');
+    if (!container) return;
+
+    let currentTab = 'funcionarios';
+
+    function render() {
+        const funcionarios = usuarios.filter(u => u.tipo !== 'cliente');
+        const clientes = usuarios.filter(u => u.tipo === 'cliente');
+
+        const tabelaFuncionarios = funcionarios.map(u =>
+            `<tr>
+                <td>#${u.id}</td>
+                <td>${u.nome}</td>
+                <td>${u.email}</td>
+                <td>${roleLabel[u.tipo] || u.tipo}</td>
+                <td><button class="btn btn-sm btn-info" onclick="alert('Funcionário: ${u.nome}\\nE-mail: ${u.email}\\nCPF: ${u.cpf || '-'}\\nCargo: ${roleLabel[u.tipo] || u.tipo}')">Ver</button></td>
+            </tr>`
+        ).join('');
+
+        const tabelaClientes = clientes.map(u =>
+            `<tr>
+                <td>#${u.id}</td>
+                <td>${u.nome}</td>
+                <td>${u.email}</td>
+                <td>${roleLabel[u.tipo] || u.tipo}</td>
+                <td><button class="btn btn-sm btn-info" onclick="alert('Cliente: ${u.nome}\\nE-mail: ${u.email}\\nCPF: ${u.cpf || '-'}')">Ver</button></td>
+            </tr>`
+        ).join('');
+
+        container.innerHTML = `
+            <div class="sub-tabs" style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
+                <button class="btn ${currentTab === 'funcionarios' ? 'btn-primary active' : 'btn-secondary'}" data-tab="funcionarios">Perfil dos Funcionários</button>
+                <button class="btn ${currentTab === 'clientes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="clientes">Perfil dos Clientes</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr>${currentTab === 'funcionarios' ? '<th>ID</th><th>Nome</th><th>E-mail</th><th>Cargo</th><th>Ações</th>' : '<th>ID</th><th>Nome</th><th>E-mail</th><th>Tipo</th><th>Ações</th>'}</tr></thead>
+                    <tbody>${currentTab === 'funcionarios' ? (tabelaFuncionarios || '<tr><td colspan="5" style="text-align:center;color:var(--gray);">Nenhum funcionário encontrado.</td></tr>') : (tabelaClientes || '<tr><td colspan="5" style="text-align:center;color:var(--gray);">Nenhum cliente encontrado.</td></tr>')}</tbody>
+                </table>
+            </div>
+        `;
+
+        container.querySelectorAll('.sub-tabs .btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentTab = btn.dataset.tab;
+                render();
+            });
+        });
+    }
+
+    render();
+}
+
 function loadPerfilUsuarios() {
-    document.getElementById('perfilUsuariosTable').innerHTML = usuarios.map(u =>
+    const clientes = usuarios.filter(u => u.tipo === 'cliente');
+    document.getElementById('perfilUsuariosTable').innerHTML = clientes.map(u =>
         `<tr>
             <td>#${u.id}</td>
             <td>${u.nome}</td>
             <td>${u.email}</td>
             <td>${roleLabel[u.tipo] || u.tipo}</td>
-            <td><button class="btn btn-sm btn-info" onclick="alert('Usuário: ${u.nome}\\nE-mail: ${u.email}\\nCPF: ${u.cpf || '-'}\\nTipo: ${roleLabel[u.tipo] || u.tipo}')">Ver</button></td>
+            <td><button class="btn btn-sm btn-info" onclick="alert('Cliente: ${u.nome}\\nE-mail: ${u.email}\\nCPF: ${u.cpf || '-'}\\nTipo: ${roleLabel[u.tipo] || u.tipo}')">Ver</button></td>
         </tr>`
     ).join('');
 }
@@ -628,6 +736,183 @@ function loadOrdensExpiradas() {
     ).join('');
 }
 
+function loadOrdensServicoAdministrativo() {
+    const container = document.getElementById('ordensServicoAdminContainer');
+    if (!container) return;
+
+    let currentTab = 'pendentes';
+    let searchTerm = '';
+
+    function render() {
+        let ordensFiltradas = [];
+
+        if (currentTab === 'pendentes') {
+            ordensFiltradas = ordens.filter(o => o.status === 'pendente');
+        } else if (currentTab === 'aprovacao') {
+            ordensFiltradas = ordens.filter(o => o.status === 'aprovacao');
+        } else if (currentTab === 'concluidos') {
+            ordensFiltradas = ordens.filter(o => o.status === 'concluido');
+        } else if (currentTab === 'expiradas') {
+            ordensFiltradas = ordens.filter(o => o.status === 'expirado');
+        }
+
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            ordensFiltradas = ordensFiltradas.filter(o =>
+                String(o.id).includes(term) ||
+                getClienteNome(o.cliente).toLowerCase().includes(term) ||
+                getTipoLabel(o.tipo).toLowerCase().includes(term) ||
+                (o.descricao || '').toLowerCase().includes(term)
+            );
+        }
+
+        function acoes(o) {
+            if (currentTab === 'pendentes') {
+                return `
+                    <button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>
+                    <button class="btn btn-sm btn-success" onclick="encaminharAprovacao(${o.id})">Encaminhar</button>`;
+            } else if (currentTab === 'aprovacao') {
+                return `
+                    <button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Detalhes</button>
+                    <button class="btn btn-sm btn-success" onclick="aprovarOS(${o.id})">Aprovar</button>
+                    <button class="btn btn-sm btn-danger" onclick="negarOS(${o.id})">Negar</button>`;
+            }
+            return `<button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>`;
+        }
+
+        const linhas = ordensFiltradas.map(o => `
+            <tr>
+                <td>#${o.id}</td>
+                <td>${getClienteNome(o.cliente)}</td>
+                <td>${getTipoLabel(o.tipo)}</td>
+                <td><span class="status-badge status-${renderStatusBadgeClasse(o.status)}">${getStatusLabel(o.status)}</span></td>
+                <td>${currentTab === 'concluidos' ? formatDate(o.dataConclusao) : formatDate(o.dataAbertura)}</td>
+                <td>${acoes(o)}</td>
+            </tr>
+        `).join('');
+
+        container.innerHTML = `
+            <div class="search-bar" style="margin-bottom:15px;">
+                <input type="text" id="adminOrdensSearch" placeholder="Pesquisar por ID, cliente, tipo ou descrição..." style="width:100%;padding:10px;border:1px solid var(--gray);border-radius:8px;">
+            </div>
+            <div class="sub-tabs" style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
+                <button class="btn ${currentTab === 'pendentes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="pendentes">Serviços Pendentes</button>
+                <button class="btn ${currentTab === 'aprovacao' ? 'btn-primary active' : 'btn-secondary'}" data-tab="aprovacao">Em Espera de Aprovação</button>
+                <button class="btn ${currentTab === 'concluidos' ? 'btn-primary active' : 'btn-secondary'}" data-tab="concluidos">Serviços Concluídos</button>
+                <button class="btn ${currentTab === 'expiradas' ? 'btn-primary active' : 'btn-secondary'}" data-tab="expiradas">Ordens Expiradas</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th><th>Ações</th></tr></thead>
+                    <tbody>${linhas || '<tr><td colspan="6" style="text-align:center;color:var(--gray);">Nenhuma ordem encontrada.</td></tr>'}</tbody>
+                </table>
+            </div>
+        `;
+
+        container.querySelectorAll('.sub-tabs .btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentTab = btn.dataset.tab;
+                searchTerm = '';
+                render();
+            });
+        });
+
+        const searchInput = document.getElementById('adminOrdensSearch');
+        searchInput.addEventListener('input', function() {
+            searchTerm = this.value;
+            render();
+        });
+    }
+
+    render();
+}
+
+function loadOrdensServicoAnalista() {
+    const container = document.getElementById('ordensServicoAnalistaContainer');
+    if (!container) return;
+
+    let currentTab = 'pendentes';
+    let searchTerm = '';
+
+    function acoes(o) {
+        if (currentTab === 'pendentes') {
+            return `
+                <button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>
+                <button class="btn btn-sm btn-success" onclick="encaminharAprovacao(${o.id})">Encaminhar</button>`;
+        }
+        return `<button class="btn btn-sm btn-info" onclick="viewOS(${o.id})">Ver</button>`;
+    }
+
+    function render() {
+        let ordensFiltradas = [];
+
+        if (currentTab === 'pendentes') {
+            ordensFiltradas = ordens.filter(o => o.status === 'pendente');
+        } else if (currentTab === 'aprovacao') {
+            ordensFiltradas = ordens.filter(o => o.status === 'aprovacao');
+        } else if (currentTab === 'concluidos') {
+            ordensFiltradas = ordens.filter(o => o.status === 'concluido');
+        } else if (currentTab === 'expiradas') {
+            ordensFiltradas = ordens.filter(o => o.status === 'expirado');
+        }
+
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            ordensFiltradas = ordensFiltradas.filter(o =>
+                String(o.id).includes(term) ||
+                getClienteNome(o.cliente).toLowerCase().includes(term) ||
+                getTipoLabel(o.tipo).toLowerCase().includes(term) ||
+                (o.descricao || '').toLowerCase().includes(term)
+            );
+        }
+
+        const linhas = ordensFiltradas.map(o => `
+            <tr>
+                <td>#${o.id}</td>
+                <td>${getClienteNome(o.cliente)}</td>
+                <td>${getTipoLabel(o.tipo)}</td>
+                <td><span class="status-badge status-${renderStatusBadgeClasse(o.status)}">${getStatusLabel(o.status)}</span></td>
+                <td>${currentTab === 'concluidos' ? formatDate(o.dataConclusao) : formatDate(o.dataAbertura)}</td>
+                <td>${acoes(o)}</td>
+            </tr>
+        `).join('');
+
+        container.innerHTML = `
+            <div class="search-bar" style="margin-bottom:15px;">
+                <input type="text" id="analistaSearch" placeholder="Pesquisar por ID, cliente, tipo ou descrição..." style="width:100%;padding:10px;border:1px solid var(--gray);border-radius:8px;">
+            </div>
+            <div class="sub-tabs" style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
+                <button class="btn ${currentTab === 'pendentes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="pendentes">Serviços Pendentes</button>
+                <button class="btn ${currentTab === 'aprovacao' ? 'btn-primary active' : 'btn-secondary'}" data-tab="aprovacao">Em Espera de Aprovação</button>
+                <button class="btn ${currentTab === 'concluidos' ? 'btn-primary active' : 'btn-secondary'}" data-tab="concluidos">Serviços Concluídos</button>
+                <button class="btn ${currentTab === 'expiradas' ? 'btn-primary active' : 'btn-secondary'}" data-tab="expiradas">Ordens Expiradas</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th><th>Ações</th></tr></thead>
+                    <tbody>${linhas || '<tr><td colspan="6" style="text-align:center;color:var(--gray);">Nenhuma ordem encontrada.</td></tr>'}</tbody>
+                </table>
+            </div>
+        `;
+
+        container.querySelectorAll('.sub-tabs .btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentTab = btn.dataset.tab;
+                searchTerm = '';
+                render();
+            });
+        });
+
+        const searchInput = document.getElementById('analistaSearch');
+        searchInput.addEventListener('input', function() {
+            searchTerm = this.value;
+            render();
+        });
+    }
+
+    render();
+}
+
 function loadOrdensServicoOperacional() {
     const container = document.getElementById('ordensServicoOperacionalContent');
     if (!container) return;
@@ -671,7 +956,7 @@ function loadOrdensServicoOperacional() {
             <div class="search-bar" style="margin-bottom:15px;">
                 <input type="text" id="osOperacionalSearch" placeholder="Pesquisar por ID, cliente, tipo ou descrição..." style="width:100%;padding:10px;border:1px solid var(--gray);border-radius:8px;">
             </div>
-            <div class="sub-tabs" style="display:flex;gap:10px;margin-bottom:15px;">
+            <div class="sub-tabs" style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
                 <button class="btn ${currentTab === 'pendentes' ? 'btn-primary active' : 'btn-secondary'}" data-tab="pendentes">Pendentes</button>
                 <button class="btn ${currentTab === 'atraso' ? 'btn-primary active' : 'btn-secondary'}" data-tab="atraso">Em atraso</button>
                 <button class="btn ${currentTab === 'todas' ? 'btn-primary active' : 'btn-secondary'}" data-tab="todas">Todas</button>
@@ -1026,6 +1311,8 @@ function handleSolicitarServico(e) {
     const descricao = document.getElementById('solDescricao').value;
     const fileInput = document.getElementById('solImagem');
     const isAC = currentRole === 'analista';
+    const isAdmin = currentRole === 'administrativo';
+    const podeReferenciar = isAC || isAdmin;
 
     if (!tipo || !descricao) {
         document.getElementById('solServicoError').textContent = 'Preencha todos os campos obrigatórios.';
@@ -1036,7 +1323,7 @@ function handleSolicitarServico(e) {
 
     let clienteId = currentUser?.id || 1;
 
-    if (isAC) {
+    if (podeReferenciar) {
         const possuiConta = document.getElementById('acClientePossuiConta').value;
         if (!possuiConta) {
             document.getElementById('solServicoError').textContent = 'Informe se o cliente possui conta.';
@@ -1075,7 +1362,7 @@ function handleSolicitarServico(e) {
             descricao,
             imagem: imagemBase64,
             executor: null,
-            status: isAC ? 'aprovacao' : 'pendente',
+            status: isAC ? 'aprovacao' : 'pendente', // analista → aprovacao; admin/cliente → pendente
             autor: currentUser?.id || clienteId,
             dataAbertura: hoje(),
             dataConclusao: null
@@ -1086,6 +1373,8 @@ function handleSolicitarServico(e) {
 
         if (isAC) {
             addNotification('OS solicitada', `Uma nova OS #${newOS.id} foi solicitada e aguarda aprovação.`);
+        } else if (isAdmin) {
+            addNotification('OS registrada', `A OS #${newOS.id} foi criada e encaminhada.`);
         } else {
             addNotification('Solicitação enviada', `Sua solicitação #${newOS.id} foi recebida.`);
         }
@@ -1095,7 +1384,9 @@ function handleSolicitarServico(e) {
         document.getElementById('fileUploadArea').classList.remove('has-image');
         document.getElementById('solServicoError').style.display = 'none';
         setLoading(btn, false);
-        alert(isAC ? 'OS solicitada com sucesso! Aguarda aprovação.' : 'Solicitação enviada com sucesso!');
+        if (isAC) alert('OS solicitada com sucesso! Aguarda aprovação.');
+        else if (isAdmin) alert('OS criada com sucesso!');
+        else alert('Solicitação enviada com sucesso!');
     });
 }
 

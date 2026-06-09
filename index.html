@@ -4,357 +4,353 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OS Fácil - Gestão de Ordens de Serviço</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen">
     <!-- Splash Screen -->
-    <div id="splashScreen" class="splash-container">
-        <h1>OS Fácil</h1>
-        <p class="subtitle">Sistema de Gestão de Ordens de Serviço</p>
-        <div class="splash-buttons">
-            <button class="splash-btn" onclick="showSplashPage('contatos')">Contatos</button>
-            <button class="splash-btn" onclick="showSplashPage('sobre')">Informações sobre a empresa</button>
-            <button class="splash-btn primary" onclick="showLogin()">Acessar o Sistema</button>
+    <div id="splashScreen" class="flex flex-col justify-center items-center min-h-screen bg-gradient-to-br from-blue-600 to-blue-900 text-white text-center px-5 sm:px-10">
+        <h1 class="text-3xl sm:text-5xl font-bold mb-2">OS Fácil</h1>
+        <p class="text-sm sm:text-lg opacity-90 mb-8 sm:mb-10">Sistema de Gestão de Ordens de Serviço</p>
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center w-full sm:w-auto px-4 sm:px-0">
+            <button class="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 rounded-lg text-sm sm:text-base cursor-pointer transition-all bg-white/15 border border-white/30 text-white hover:bg-white/25" onclick="showSplashPage('contatos')">Contatos</button>
+            <button class="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 rounded-lg text-sm sm:text-base cursor-pointer transition-all bg-white/15 border border-white/30 text-white hover:bg-white/25" onclick="showSplashPage('sobre')">Informações sobre a empresa</button>
+            <button class="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 rounded-lg text-sm sm:text-base cursor-pointer transition-all bg-white text-blue-600 border border-white hover:bg-gray-100" onclick="showLogin()">Acessar o Sistema</button>
         </div>
 
-        <div id="contatos" class="page" style="text-align: left; color: white; margin-top: 40px; width: 100%; max-width: 600px;">
-            <button class="splash-btn" onclick="showSplash()" style="margin-bottom: 20px;">&larr; Voltar</button>
-            <h2 style="margin-bottom: 20px;">Contatos</h2>
-            <div class="info-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
-                <p><strong>E-mail:</strong> contato@osfacil.com.br</p>
-                <p><strong>Telefone:</strong> (11) 3000-0000</p>
-                <p><strong>WhatsApp:</strong> (11) 99999-0000</p>
-                <p><strong>Endereço:</strong> Rua Exemplo, 123 - Centro, São Paulo - SP</p>
+        <div id="contatos" class="page hidden text-left text-white mt-10 w-full max-w-lg">
+            <button class="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-lg text-sm sm:text-base cursor-pointer transition-all bg-white/15 border border-white/30 text-white hover:bg-white/25 mb-5" onclick="showSplash()">&larr; Voltar</button>
+            <h2 class="text-2xl font-bold mb-5">Contatos</h2>
+            <div class="bg-white/10 border border-white/20 rounded-lg p-6">
+                <p class="mb-2"><strong>E-mail:</strong> contato@osfacil.com.br</p>
+                <p class="mb-2"><strong>Telefone:</strong> (11) 3000-0000</p>
+                <p class="mb-2"><strong>WhatsApp:</strong> (11) 99999-0000</p>
+                <p class="mb-2"><strong>Endereço:</strong> Rua Exemplo, 123 - Centro, São Paulo - SP</p>
             </div>
         </div>
 
-        <div id="sobre" class="page" style="text-align: left; color: white; margin-top: 40px; width: 100%; max-width: 600px;">
-            <button class="splash-btn" onclick="showSplash()" style="margin-bottom: 20px;">&larr; Voltar</button>
-            <h2 style="margin-bottom: 20px;">Sobre a Empresa</h2>
-            <div class="info-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
-                <p>A OS Fácil é uma plataforma completa para gestão de ordens de serviço, conectando clientes, analistas comerciais, equipe administrativa e operacional em um único sistema.</p>
-                <p>Nosso objetivo é simplificar o gerenciamento de solicitações, otimizar prazos e garantir transparência em todo o fluxo de serviços.</p>
+        <div id="sobre" class="page hidden text-left text-white mt-10 w-full max-w-lg">
+            <button class="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-lg text-sm sm:text-base cursor-pointer transition-all bg-white/15 border border-white/30 text-white hover:bg-white/25 mb-5" onclick="showSplash()">&larr; Voltar</button>
+            <h2 class="text-2xl font-bold mb-5">Sobre a Empresa</h2>
+            <div class="bg-white/10 border border-white/20 rounded-lg p-6">
+                <p class="mb-4 leading-relaxed">A OS Fácil é uma plataforma completa para gestão de ordens de serviço, conectando clientes, analistas comerciais, equipe administrativa e operacional em um único sistema.</p>
+                <p class="leading-relaxed">Nosso objetivo é simplificar o gerenciamento de solicitações, otimizar prazos e garantir transparência em todo o fluxo de serviços.</p>
             </div>
         </div>
     </div>
 
     <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-box">
-            <h1>OS Fácil</h1>
-            <p class="subtitle">Faça seu login para continuar</p>
+    <div id="loginScreen" class="hidden justify-center items-center min-h-screen bg-gradient-to-br from-blue-600 to-blue-900 p-4">
+            <div class="bg-white p-6 sm:p-10 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.2)] w-full max-w-md">
+            <h1 class="text-blue-600 text-center text-3xl font-bold mb-2">OS Fácil</h1>
+            <p class="text-center text-gray-500 mb-8">Faça seu login para continuar</p>
             <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">E-mail / CPF</label>
-                    <input type="text" id="email" placeholder="seu@email.com ou CPF" required>
+                <div class="mb-5">
+                    <label for="email" class="block mb-1 text-gray-700 font-medium">E-mail / CPF</label>
+                    <input type="text" id="email" placeholder="seu@email.com ou CPF" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                 </div>
-                <div class="form-group">
-                    <label for="password">Senha</label>
-                    <input type="password" id="password" placeholder="Sua senha" required>
+                <div class="mb-5">
+                    <label for="password" class="block mb-1 text-gray-700 font-medium">Senha</label>
+                    <input type="password" id="password" placeholder="Sua senha" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                 </div>
-                <div class="form-group">
-                    <label for="userType">Tipo de Usuário (Demo)</label>
-                    <select id="userType">
+                <div class="mb-5">
+                    <label for="userType" class="block mb-1 text-gray-700 font-medium">Tipo de Usuário (Demo)</label>
+                    <select id="userType" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                         <option value="cliente">Cliente</option>
                         <option value="analista">Analista Comercial</option>
                         <option value="administrativo">Administrativo</option>
                         <option value="operacional">Operacional</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary" id="loginBtn">Entrar</button>
-                <button type="button" class="link-btn" onclick="showCadastro()">Não tem cadastro? Cadastre-se</button>
+                <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-medium cursor-pointer transition-all hover:bg-blue-800" id="loginBtn">Entrar</button>
+                <button type="button" class="w-full bg-transparent border-none text-blue-600 cursor-pointer text-sm mt-3 block text-center hover:underline" onclick="showCadastro()">Não tem cadastro? Cadastre-se</button>
             </form>
         </div>
     </div>
 
     <!-- Cadastro Modal -->
-    <div id="cadastroModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Cadastro de Usuário</h3>
-                <button class="close-modal" onclick="closeModal('cadastroModal')">&times;</button>
+    <div id="cadastroModal" class="modal-overlay">
+                <div class="bg-white p-4 sm:p-8 rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl mx-4 sm:mx-0">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-700">Cadastro de Cliente</h3>
+                <button class="bg-transparent border-none text-2xl cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal('cadastroModal')">&times;</button>
             </div>
             <form id="cadastroForm">
-                <div class="form-group">
-                    <label>Nome Completo</label>
-                    <input type="text" id="cadNome" required>
+                <div class="mb-5">
+                    <label class="block mb-1 text-gray-700 font-medium">Nome Completo</label>
+                    <input type="text" id="cadNome" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                 </div>
-                <div class="form-group">
-                    <label>CPF</label>
-                    <input type="text" id="cadCPF" placeholder="000.000.000-00" required>
+                <div class="mb-5">
+                    <label class="block mb-1 text-gray-700 font-medium">CPF</label>
+                    <input type="text" id="cadCPF" placeholder="000.000.000-00" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                 </div>
-                <div class="form-group">
-                    <label>E-mail</label>
-                    <input type="email" id="cadEmail" required>
+                <div class="mb-5">
+                    <label class="block mb-1 text-gray-700 font-medium">E-mail</label>
+                    <input type="email" id="cadEmail" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                 </div>
-                <div class="form-group">
-                    <label>Telefone</label>
-                    <input type="tel" id="cadTelefone" required>
+                <div class="mb-5">
+                    <label class="block mb-1 text-gray-700 font-medium">Telefone</label>
+                    <input type="tel" id="cadTelefone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                 </div>
-                <div class="form-group">
-                    <label>Senha</label>
-                    <input type="password" id="cadSenha" required>
+                <div class="mb-5">
+                    <label class="block mb-1 text-gray-700 font-medium">Senha</label>
+                    <input type="password" id="cadSenha" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                 </div>
-                <div class="form-group">
-                    <label>Tipo de Usuário</label>
-                    <select id="cadTipo">
-                        <option value="cliente">Cliente</option>
-                        <option value="analista">Analista Comercial</option>
-                        <option value="administrativo">Administrativo</option>
-                        <option value="operacional">Operacional</option>
-                    </select>
-                </div>
-                <div id="cadastroError" class="error-msg" style="display:none; margin-bottom:10px;"></div>
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <input type="hidden" id="cadTipo" value="cliente">
+                <div id="cadastroError" class="text-red-600 text-sm mb-3 hidden"></div>
+                <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-medium cursor-pointer transition-all hover:bg-blue-800">Cadastrar</button>
             </form>
         </div>
     </div>
 
     <!-- Main App -->
-    <div id="appContainer" class="app-container">
-        <header class="header">
-            <h1>OS Fácil</h1>
-            <div class="header-info">
-                <span class="user-badge" id="userBadge">Usuário</span>
-                <button class="btn logout-btn" onclick="logout()">Sair</button>
+    <div id="appContainer" class="hidden">
+        <header class="bg-blue-600 text-white px-4 sm:px-8 py-4 flex justify-between items-center shadow-md">
+            <div class="flex items-center gap-3">
+                <button class="lg:hidden bg-transparent border-none text-white text-2xl cursor-pointer p-1" onclick="toggleSidebar()" id="menuBtn" aria-label="Abrir menu">☰</button>
+                <h1 class="text-xl sm:text-2xl font-bold">OS Fácil</h1>
+            </div>
+            <div class="flex items-center gap-3 sm:gap-5">
+                <span class="bg-white/20 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm cursor-pointer transition-all hover:bg-white/30 truncate max-w-[120px] sm:max-w-none" id="userBadge">Usuário</span>
+                <button class="bg-white/20 text-white border border-white/30 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium cursor-pointer transition-all hover:bg-white/30" onclick="logout()">Sair</button>
             </div>
         </header>
 
-        <div class="main-content">
-            <nav class="sidebar" id="sidebar">
-                <ul class="sidebar-menu" id="sidebarMenu"></ul>
+        <div class="flex min-h-[calc(100vh-64px)] relative">
+            <!-- Backdrop -->
+            <div id="sidebarBackdrop" class="hidden fixed inset-0 bg-black/50 z-30 lg:hidden" onclick="closeSidebar()"></div>
+            <!-- Sidebar -->
+            <nav class="w-60 bg-white shadow-[2px_0_10px_rgba(0,0,0,0.1)] fixed lg:static inset-y-0 left-0 z-40 -translate-x-full lg:translate-x-0 transition-transform duration-300" id="sidebar">
+                <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 lg:hidden">
+                    <span class="font-semibold text-gray-700">Menu</span>
+                    <button class="bg-transparent border-none text-2xl cursor-pointer text-gray-500 p-1" onclick="closeSidebar()">&times;</button>
+                </div>
+                <ul class="list-none" id="sidebarMenu"></ul>
             </nav>
 
-            <main class="content">
+            <main class="content flex-1 p-4 sm:p-8 overflow-y-auto max-h-[calc(100vh-64px)]">
                 <!-- HOME pages -->
-                <div id="home-cliente" class="page">
-                    <div class="page-header">
-                        <h2>Início</h2>
-                        <span id="currentDate"></span>
+                <div id="home-cliente" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
+                        <h2 class="text-xl sm:text-xl sm:text-2xl font-semibold text-gray-700">Início</h2>
+                        <span id="currentDate" class="text-gray-500 text-xs sm:text-sm"></span>
                     </div>
-                    <div class="table-container" style="margin-bottom:20px;">
-                        <h3 style="padding:15px 20px;color:var(--secondary);">Ordens de Serviço em Aberto</h3>
-                        <table>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto mb-5">
+                        <h3 class="px-5 py-4 text-gray-600 font-semibold">Ordens de Serviço em Aberto</h3>
+                        <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th>ID</th><th>Tipo</th><th>Status</th><th>Abertura</th><th>Ações</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th></tr>
                             </thead>
                             <tbody id="clienteHomeOSTable"></tbody>
                         </table>
                     </div>
-                    <div class="home-grid">
-                        <div class="home-card" onclick="showPage('solicitacao-servico')">
-                            <h3>Solicitação de serviços</h3>
-                            <p>Solicitar um novo serviço</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3 sm:gap-5">
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('solicitacao-servico')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Solicitação de serviços</h3>
+                            <p class="text-gray-500 text-sm">Solicitar um novo serviço</p>
                         </div>
-                        <div class="home-card" onclick="showPage('notificacoes')">
-                            <h3>Notificações</h3>
-                            <p>Visualizar notificações</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('notificacoes')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Notificações</h3>
+                            <p class="text-gray-500 text-sm">Visualizar notificações</p>
                         </div>
-                        <div class="home-card" onclick="showPage('perfil')">
-                            <h3>Perfil</h3>
-                            <p>Meus dados de usuário</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showUserProfile()">
+                            <h3 class="text-gray-700 font-semibold mb-2">Meu Perfil</h3>
+                            <p class="text-gray-500 text-sm">Meus dados de usuário</p>
                         </div>
-                        <div class="home-card" onclick="showPage('minhas-ordens')">
-                            <h3>Minhas solicitações</h3>
-                            <p>Acompanhar e cancelar ordens</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('minhas-ordens')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Minhas Solicitações</h3>
+                            <p class="text-gray-500 text-sm">Acompanhar e cancelar ordens</p>
                         </div>
                     </div>
                 </div>
 
-                <div id="home-analista" class="page">
-                    <div class="page-header">
-                        <h2>Início - Analista Comercial</h2>
-                        <span id="currentDate2"></span>
+                <div id="home-analista" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Início - Analista Comercial</h2>
+                        <span id="currentDate2" class="text-gray-500 text-sm"></span>
                     </div>
-                    <div class="stats-grid">
-                        <div class="stat-card pendentes">
-                            <h3>Ordens Pendentes</h3>
-                            <div class="value" id="analistaPendentes">0</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3 sm:gap-5 mb-6 sm:mb-8">
+                        <div class="bg-white rounded-xl shadow-sm p-5">
+                            <h3 class="text-gray-500 text-sm mb-2">Ordens Pendentes</h3>
+                            <div class="text-3xl font-bold text-orange-600" id="analistaPendentes">0</div>
                         </div>
-                        <div class="stat-card executados">
-                            <h3>Serviços Executados</h3>
-                            <div class="value" id="analistaExecutados">0</div>
+                        <div class="bg-white rounded-xl shadow-sm p-5">
+                            <h3 class="text-gray-500 text-sm mb-2">Serviços Executados</h3>
+                            <div class="text-3xl font-bold text-green-700" id="analistaExecutados">0</div>
                         </div>
                     </div>
-                    <div class="table-container" style="margin-bottom:20px;">
-                        <h3 style="padding:15px 20px;color:var(--secondary);">Ordens de Serviço em Aberto</h3>
-                        <table>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto mb-5">
+                        <h3 class="px-5 py-4 text-gray-600 font-semibold">Ordens de Serviço em Aberto</h3>
+                        <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th></tr>
                             </thead>
                             <tbody id="analistaHomeOSTable"></tbody>
                         </table>
                     </div>
-                    <div class="home-grid">
-                        <div class="home-card" onclick="showPage('solicitacao-servico')">
-                            <h3>Solicitação de serviços</h3>
-                            <p>Solicitar um novo serviço</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3 sm:gap-5">
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('solicitacao-servico')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Solicitação de serviços</h3>
+                            <p class="text-gray-500 text-sm">Solicitar um novo serviço</p>
                         </div>
-                        <div class="home-card" onclick="showPage('notificacoes')">
-                            <h3>Notificações</h3>
-                            <p>Visualizar notificações</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('notificacoes')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Notificações</h3>
+                            <p class="text-gray-500 text-sm">Visualizar notificações</p>
                         </div>
-                        <div class="home-card" onclick="showPage('perfil')">
-                            <h3>Perfil</h3>
-                            <p>Meus dados de usuário</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showUserProfile()">
+                            <h3 class="text-gray-700 font-semibold mb-2">Meu Perfil</h3>
+                            <p class="text-gray-500 text-sm">Meus dados de usuário</p>
                         </div>
-                        <div class="home-card" onclick="showPage('ordens-pendentes')">
-                            <h3>Serviços Pendentes</h3>
-                            <p>Gerenciar ordens pendentes</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-analista')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Ordens de Serviço</h3>
+                            <p class="text-gray-500 text-sm">Gerenciar ordens pendentes e buscar ordens</p>
                         </div>
-                        <div class="home-card" onclick="showPage('busca-os')">
-                            <h3>Buscar Ordens</h3>
-                            <p>Pesquisar por tipo, ID ou data</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('documentacao')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Documentação</h3>
+                            <p class="text-gray-500 text-sm">Acessar documentação</p>
                         </div>
-                        <div class="home-card" onclick="showPage('documentacao')">
-                            <h3>Documentação</h3>
-                            <p>Acessar documentação</p>
-                        </div>
-                        <div class="home-card" onclick="showPage('perfil-usuarios')">
-                            <h3>Perfil dos usuários</h3>
-                            <p>Visualizar perfis de usuários</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('perfil-usuarios')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Perfil dos Clientes</h3>
+                            <p class="text-gray-500 text-sm">Visualizar perfis de clientes</p>
                         </div>
                     </div>
                 </div>
 
-                <div id="home-administrativo" class="page">
-                    <div class="page-header">
-                        <h2>Início - Administrativo</h2>
-                        <span id="currentDate3"></span>
+                <div id="home-administrativo" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Início - Administrativo</h2>
+                        <span id="currentDate3" class="text-gray-500 text-sm"></span>
                     </div>
-                    <div class="stats-grid">
-                        <div class="stat-card pendentes">
-                            <h3>Ordens Pendentes</h3>
-                            <div class="value" id="adminPendentes">0</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3 sm:gap-5 mb-6 sm:mb-8">
+                        <div class="bg-white rounded-xl shadow-sm p-5">
+                            <h3 class="text-gray-500 text-sm mb-2">Ordens Pendentes</h3>
+                            <div class="text-3xl font-bold text-orange-600" id="adminPendentes">0</div>
                         </div>
-                        <div class="stat-card aprovacao">
-                            <h3>Esperando Aprovação</h3>
-                            <div class="value" id="adminAprovacao">0</div>
+                        <div class="bg-white rounded-xl shadow-sm p-5">
+                            <h3 class="text-gray-500 text-sm mb-2">Esperando Aprovação</h3>
+                            <div class="text-3xl font-bold text-blue-600" id="adminAprovacao">0</div>
                         </div>
-                        <div class="stat-card executados">
-                            <h3>Serviços Executados</h3>
-                            <div class="value" id="adminExecutados">0</div>
+                        <div class="bg-white rounded-xl shadow-sm p-5">
+                            <h3 class="text-gray-500 text-sm mb-2">Serviços Executados</h3>
+                            <div class="text-3xl font-bold text-green-700" id="adminExecutados">0</div>
                         </div>
                     </div>
-                    <div class="table-container" style="margin-bottom:20px;">
-                        <h3 style="padding:15px 20px;color:var(--secondary);">Ordens de Serviço em Aberto</h3>
-                        <table>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto mb-5">
+                        <h3 class="px-5 py-4 text-gray-600 font-semibold">Ordens de Serviço em Aberto</h3>
+                        <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th></tr>
                             </thead>
                             <tbody id="adminHomeOSTable"></tbody>
                         </table>
                     </div>
-                    <div class="home-grid">
-                        <div class="home-card" onclick="showPage('solicitacao-servico')">
-                            <h3>Solicitação de serviços</h3>
-                            <p>Solicitar um novo serviço</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3 sm:gap-5">
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('solicitacao-servico')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Solicitação de serviços</h3>
+                            <p class="text-gray-500 text-sm">Solicitar um novo serviço</p>
                         </div>
-                        <div class="home-card" onclick="showPage('notificacoes')">
-                            <h3>Notificações</h3>
-                            <p>Visualizar notificações</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('notificacoes')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Notificações</h3>
+                            <p class="text-gray-500 text-sm">Visualizar notificações</p>
                         </div>
-                        <div class="home-card" onclick="showPage('perfil')">
-                            <h3>Perfil</h3>
-                            <p>Meus dados de usuário</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showUserProfile()">
+                            <h3 class="text-gray-700 font-semibold mb-2">Meu Perfil</h3>
+                            <p class="text-gray-500 text-sm">Meus dados de usuário</p>
                         </div>
-                        <div class="home-card" onclick="showPage('ordens-pendentes')">
-                            <h3>Serviços Pendentes</h3>
-                            <p>Gerenciar ordens pendentes</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-administrativo')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Serviços Pendentes</h3>
+                            <p class="text-gray-500 text-sm">Gerenciar ordens pendentes</p>
                         </div>
-                        <div class="home-card" onclick="showPage('servicos-aprovacao')">
-                            <h3>Serviços em Espera de Aprovação</h3>
-                            <p>Aprovar ou rejeitar ordens</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-administrativo')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Serviços em Espera de Aprovação</h3>
+                            <p class="text-gray-500 text-sm">Aprovar ou rejeitar ordens</p>
                         </div>
-                        <div class="home-card" onclick="showPage('servicos-executados')">
-                            <h3>Serviços concluídos</h3>
-                            <p>Histórico de serviços realizados</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-administrativo')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Serviços concluídos</h3>
+                            <p class="text-gray-500 text-sm">Histórico de serviços realizados</p>
                         </div>
-                        <div class="home-card" onclick="showPage('documentacao')">
-                            <h3>Documentação</h3>
-                            <p>Acessar documentação</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('documentacao')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Documentação</h3>
+                            <p class="text-gray-500 text-sm">Acessar documentação</p>
                         </div>
-                        <div class="home-card" onclick="showPage('perfil-usuarios')">
-                            <h3>Perfil dos usuários</h3>
-                            <p>Visualizar perfis de usuários</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('perfis')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Perfis</h3>
+                            <p class="text-gray-500 text-sm">Gerenciar funcionários e clientes</p>
                         </div>
-                        <div class="home-card" onclick="showPage('perfil-funcionarios')">
-                            <h3>Perfil dos funcionários</h3>
-                            <p>Gerenciar funcionários</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('historico-ordens')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Histórico de Ordens</h3>
+                            <p class="text-gray-500 text-sm">Consultar histórico completo</p>
                         </div>
-                        <div class="home-card" onclick="showPage('historico-ordens')">
-                            <h3>Histórico de Ordens</h3>
-                            <p>Consultar histórico completo</p>
-                        </div>
-                        <div class="home-card" onclick="showPage('ordens-expiradas')">
-                            <h3>Ordens expiradas</h3>
-                            <p>Visualizar ordens vencidas</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-administrativo')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Ordens expiradas</h3>
+                            <p class="text-gray-500 text-sm">Visualizar ordens vencidas</p>
                         </div>
                     </div>
                 </div>
 
-                <div id="home-operacional" class="page">
-                    <div class="page-header">
-                        <h2>Início - Operacional</h2>
-                        <span id="currentDate4"></span>
+                <div id="home-operacional" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Início - Operacional</h2>
+                        <span id="currentDate4" class="text-gray-500 text-sm"></span>
                     </div>
-                    <div class="stats-grid">
-                        <div class="stat-card pendentes">
-                            <h3>Ordens Pendentes</h3>
-                            <div class="value" id="operacionalPendentes">0</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3 sm:gap-5 mb-6 sm:mb-8">
+                        <div class="bg-white rounded-xl shadow-sm p-5">
+                            <h3 class="text-gray-500 text-sm mb-2">Ordens Pendentes</h3>
+                            <div class="text-3xl font-bold text-orange-600" id="operacionalPendentes">0</div>
                         </div>
-                        <div class="stat-card executados">
-                            <h3>Serviços Executados</h3>
-                            <div class="value" id="operacionalExecutados">0</div>
+                        <div class="bg-white rounded-xl shadow-sm p-5">
+                            <h3 class="text-gray-500 text-sm mb-2">Serviços Executados</h3>
+                            <div class="text-3xl font-bold text-green-700" id="operacionalExecutados">0</div>
                         </div>
                     </div>
-                    <div class="table-container" style="margin-bottom:20px;">
-                        <h3 style="padding:15px 20px;color:var(--secondary);">Ordens de Serviço em Aberto</h3>
-                        <table>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto mb-5">
+                        <h3 class="px-5 py-4 text-gray-600 font-semibold">Ordens de Serviço em Aberto</h3>
+                        <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th></tr>
                             </thead>
                             <tbody id="operacionalHomeOSTable"></tbody>
                         </table>
                     </div>
-                    <div class="home-grid">
-                        <div class="home-card" onclick="showPage('ordens-servico-operacional')">
-                            <h3>Ordens de Serviço</h3>
-                            <p>Gerenciar ordens pendentes e em atraso</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3 sm:gap-5">
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('ordens-servico-operacional')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Ordens de Serviço</h3>
+                            <p class="text-gray-500 text-sm">Gerenciar ordens pendentes e em atraso</p>
                         </div>
-                        <div class="home-card" onclick="showPage('perfil')">
-                            <h3>Perfil</h3>
-                            <p>Meus dados de usuário</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showUserProfile()">
+                            <h3 class="text-gray-700 font-semibold mb-2">Meu Perfil</h3>
+                            <p class="text-gray-500 text-sm">Meus dados de usuário</p>
                         </div>
-                        <div class="home-card" onclick="showPage('notificacoes')">
-                            <h3>Notificações</h3>
-                            <p>Visualizar notificações</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('notificacoes')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Notificações</h3>
+                            <p class="text-gray-500 text-sm">Visualizar notificações</p>
                         </div>
-                        <div class="home-card" onclick="showPage('documentacao')">
-                            <h3>Documentação</h3>
-                            <p>Acessar documentação</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('documentacao')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Documentação</h3>
+                            <p class="text-gray-500 text-sm">Acessar documentação</p>
                         </div>
-                        <div class="home-card" onclick="showPage('servicos-executados')">
-                            <h3>Serviços executados</h3>
-                            <p>Histórico de serviços realizados</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md border-l-4 border-blue-600" onclick="showPage('servicos-executados')">
+                            <h3 class="text-gray-700 font-semibold mb-2">Serviços Executados</h3>
+                            <p class="text-gray-500 text-sm">Histórico de serviços realizados</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Minhas solicitações (Cliente) -->
-                <div id="minhas-ordens" class="page">
-                    <div class="page-header">
-                        <h2>Minhas solicitações</h2>
+                <div id="minhas-ordens" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Minhas solicitações</h2>
                     </div>
-                    <div class="table-container">
-                        <table>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+                        <table class="w-full border-collapse min-w-[500px]">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Tipo</th>
-                                    <th>Status</th>
-                                    <th>Abertura</th>
-                                    <th>Ações</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th>
                                 </tr>
                             </thead>
                             <tbody id="minhasOrdensTable"></tbody>
@@ -363,39 +359,39 @@
                 </div>
 
                 <!-- Solicitação de Serviço -->
-                <div id="solicitacao-servico" class="page">
-                    <div class="page-header">
-                        <h2>Solicitação de Serviço</h2>
+                <div id="solicitacao-servico" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Solicitação de Serviço</h2>
                     </div>
-                    <div class="table-container" style="padding:20px;">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
                         <form id="solServicoForm">
-                            <div id="acClienteSection" style="display:none;">
-                                <div class="form-group">
-                                    <label>Cliente já possui conta?</label>
-                                    <select id="acClientePossuiConta">
+                            <div id="acClienteSection" class="hidden">
+                                <div class="mb-5">
+                                    <label class="block mb-1 text-gray-700 font-medium">Cliente já possui conta?</label>
+                                    <select id="acClientePossuiConta" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                                         <option value="">Selecione</option>
                                         <option value="sim">Sim</option>
                                         <option value="nao">Não</option>
                                     </select>
                                 </div>
-                                <div class="form-group" id="acRefClienteGroup" style="display:none;">
-                                    <label>Referenciar Conta do Cliente</label>
-                                    <select id="acRefCliente">
+                                <div class="mb-5 hidden" id="acRefClienteGroup">
+                                    <label class="block mb-1 text-gray-700 font-medium">Referenciar Conta do Cliente</label>
+                                    <select id="acRefCliente" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                                         <option value="">Selecione o cliente</option>
                                     </select>
                                 </div>
-                                <div class="form-group" id="acCriarClienteGroup" style="display:none;">
-                                    <label>Nome do Cliente</label>
-                                    <input type="text" id="acNovoClienteNome">
-                                    <label style="margin-top:10px;">E-mail do Cliente</label>
-                                    <input type="email" id="acNovoClienteEmail">
-                                    <label style="margin-top:10px;">CPF do Cliente</label>
-                                    <input type="text" id="acNovoClienteCPF">
+                                <div class="mb-5 hidden" id="acCriarClienteGroup">
+                                    <label class="block mb-1 text-gray-700 font-medium">Nome do Cliente</label>
+                                    <input type="text" id="acNovoClienteNome" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
+                                    <label class="block mb-1 text-gray-700 font-medium mt-3">E-mail do Cliente</label>
+                                    <input type="email" id="acNovoClienteEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
+                                    <label class="block mb-1 text-gray-700 font-medium mt-3">CPF do Cliente</label>
+                                    <input type="text" id="acNovoClienteCPF" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>Tipo de Serviço</label>
-                                <select id="solTipo" required>
+                            <div class="mb-5">
+                                <label class="block mb-1 text-gray-700 font-medium">Tipo de Serviço</label>
+                                <select id="solTipo" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                                     <option value="">Selecione o tipo</option>
                                     <option value="modificacao_tecnica">Modificação Técnica da Ligação</option>
                                     <option value="troca_cavalete">Troca Cavalete para Caixa UMA</option>
@@ -414,56 +410,62 @@
                                     <option value="troca_hidro">Troca de Hidrômetro</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>Descrição do Problema</label>
-                                <textarea id="solDescricao" rows="4" required></textarea>
+                            <div class="mb-5">
+                                <label class="block mb-1 text-gray-700 font-medium">Descrição do Problema</label>
+                                <textarea id="solDescricao" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600"></textarea>
                             </div>
-                            <div class="form-group">
-                                <label>Anexar Imagem</label>
+                            <div class="mb-5">
+                                <label class="block mb-1 text-gray-700 font-medium">Anexar Imagem</label>
                                 <div class="file-upload" id="fileUploadArea" onclick="document.getElementById('solImagem').click()">
-                                    <p>Clique para selecionar uma imagem</p>
-                                    <input type="file" id="solImagem" accept="image/*" style="display:none">
-                                    <img id="solImagemPreview" class="img-preview" style="display:none">
+                                    <p class="text-gray-500">Clique para selecionar uma imagem</p>
+                                    <input type="file" id="solImagem" accept="image/*" class="hidden">
+                                    <img id="solImagemPreview" class="img-preview hidden">
                                 </div>
                             </div>
-                            <div id="solServicoError" class="error-msg" style="display:none;margin-bottom:10px;"></div>
-                            <button type="submit" class="btn btn-primary">Enviar Solicitação</button>
+                            <div id="solServicoError" class="text-red-600 text-sm mb-3 hidden"></div>
+                            <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium cursor-pointer transition-all hover:bg-blue-800">Enviar Solicitação</button>
                         </form>
                     </div>
                 </div>
 
                 <!-- Cancelar OS (Cliente) -->
-                <div id="cancelar-os" class="page">
-                    <div class="page-header">
-                        <h2>Cancelar Ordem de Serviço</h2>
+                <div id="cancelar-os" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Cancelar Ordem de Serviço</h2>
                     </div>
-                    <div class="table-container" style="padding:20px;">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
                         <form id="cancelarOSForm">
-                            <div class="form-group">
-                                <label>Selecione a OS</label>
-                                <select id="cancelarOSSelect" required>
+                            <div class="mb-5">
+                                <label class="block mb-1 text-gray-700 font-medium">Selecione a OS</label>
+                                <select id="cancelarOSSelect" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                                     <option value="">Selecione</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>Motivo do Cancelamento</label>
-                                <textarea id="cancelarOSMotivo" rows="4" required></textarea>
+                            <div class="mb-5">
+                                <label class="block mb-1 text-gray-700 font-medium">Motivo do Cancelamento</label>
+                                <textarea id="cancelarOSMotivo" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600"></textarea>
                             </div>
-                            <div id="cancelarOSError" class="error-msg" style="display:none;margin-bottom:10px;"></div>
-                            <button type="submit" class="btn btn-danger">Solicitar Cancelamento</button>
+                            <div id="cancelarOSError" class="text-red-600 text-sm mb-3 hidden"></div>
+                            <button type="submit" class="px-6 py-3 bg-red-600 text-white rounded-lg font-medium cursor-pointer transition-all hover:bg-red-700">Solicitar Cancelamento</button>
                         </form>
                     </div>
                 </div>
 
+                <!-- Ordens de Serviço (Analista) -->
+                <div id="ordens-servico-analista" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Ordens de Serviço</h2></div>
+                    <div id="ordensServicoAnalistaContainer"></div>
+                </div>
+
                 <!-- Busca de OS (Analista) -->
-                <div id="busca-os" class="page">
-                    <div class="page-header">
-                        <h2>Buscar Ordens de Serviço</h2>
+                <div id="busca-os" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Buscar Ordens de Serviço</h2>
                     </div>
-                    <div class="filters">
-                        <div class="filter-group">
-                            <label>Tipo de OS</label>
-                            <select id="buscaTipo">
+                    <div class="bg-white rounded-xl shadow-sm p-5 mb-5 flex gap-4 flex-wrap items-end">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-gray-500">Tipo de OS</label>
+                            <select id="buscaTipo" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                                 <option value="">Todos</option>
                                 <option value="modificacao_tecnica">Modificação Técnica</option>
                                 <option value="troca_cavalete">Troca Cavalete</option>
@@ -473,25 +475,25 @@
                                 <option value="troca_hidro">Troca de Hidrômetro</option>
                             </select>
                         </div>
-                        <div class="filter-group">
-                            <label>Identificador (ID)</label>
-                            <input type="number" id="buscaId" placeholder="Nº da OS">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-gray-500">Identificador (ID)</label>
+                            <input type="number" id="buscaId" placeholder="Nº da OS" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                         </div>
-                        <div class="filter-group">
-                            <label>Data de Emissão</label>
-                            <input type="date" id="buscaData">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-gray-500">Data de Emissão</label>
+                            <input type="date" id="buscaData" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600">
                         </div>
-                        <button class="btn btn-primary" onclick="buscarOrdens()">Buscar</button>
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium cursor-pointer transition-all hover:bg-blue-800" onclick="buscarOrdens()">Buscar</button>
                     </div>
-                    <div class="table-container">
-                        <table>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+                        <table class="w-full border-collapse min-w-[500px]">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Cliente</th>
-                                    <th>Tipo</th>
-                                    <th>Status</th>
-                                    <th>Data</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th>
+                                    <th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Data</th>
                                 </tr>
                             </thead>
                             <tbody id="buscaOSTable"></tbody>
@@ -500,38 +502,44 @@
                 </div>
 
                 <!-- Notificações -->
-                <div id="notificacoes" class="page">
-                    <div class="page-header"><h2>Notificações</h2></div>
-                    <div class="notifications-list" id="notificationsList"></div>
+                <div id="notificacoes" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Notificações</h2></div>
+                    <div class="flex flex-col gap-3" id="notificationsList"></div>
                 </div>
 
                 <!-- Perfil -->
-                <div id="perfil" class="page">
-                    <div class="page-header"><h2>Meu Perfil</h2></div>
-                    <div class="info-page">
-                        <div class="info-card">
-                            <h3>Dados do Usuário</h3>
-                            <p id="perfilNome"><strong>Nome:</strong> </p>
-                            <p id="perfilEmail"><strong>E-mail:</strong> </p>
-                            <p id="perfilCPF"><strong>CPF:</strong> </p>
-                            <p id="perfilTipo"><strong>Tipo:</strong> </p>
+                <div id="perfil" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Meu Perfil</h2></div>
+                    <div class="max-w-2xl">
+                        <div class="bg-white rounded-xl shadow-sm p-6 mb-5">
+                            <h3 class="text-blue-600 font-semibold mb-3">Dados do Usuário</h3>
+                            <p id="perfilNome" class="text-gray-500 mb-3"><strong class="text-gray-700">Nome:</strong> </p>
+                            <p id="perfilEmail" class="text-gray-500 mb-3"><strong class="text-gray-700">E-mail:</strong> </p>
+                            <p id="perfilCPF" class="text-gray-500 mb-3"><strong class="text-gray-700">CPF:</strong> </p>
+                            <p id="perfilTipo" class="text-gray-500 mb-3"><strong class="text-gray-700">Tipo:</strong> </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Ordens de Serviço (Operacional) -->
-                <div id="ordens-servico-operacional" class="page">
-                    <div class="page-header"><h2>Ordens de Serviço</h2></div>
-                    <div id="ordensServicoOperacionalContent" style="padding:0 20px 20px;"></div>
+                <div id="ordens-servico-operacional" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Ordens de Serviço</h2></div>
+                    <div id="ordensServicoOperacionalContent" class="px-0 pb-5"></div>
+                </div>
+
+                <!-- Ordens de Serviço (Admin) -->
+                <div id="ordens-servico-administrativo" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Ordens de Serviço</h2></div>
+                    <div id="ordensServicoAdminContainer"></div>
                 </div>
 
                 <!-- Ordens Pendentes -->
-                <div id="ordens-pendentes" class="page">
-                    <div class="page-header"><h2>Ordens Pendentes</h2></div>
-                    <div class="table-container">
-                        <table>
+                <div id="ordens-pendentes" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Ordens Pendentes</h2></div>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+                        <table class="w-full border-collapse min-w-[500px]">
                             <thead>
-                                <tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th><th>Ações</th></tr>
+                                <tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th></tr>
                             </thead>
                             <tbody id="ordensPendentesTable"></tbody>
                         </table>
@@ -539,83 +547,89 @@
                 </div>
 
                 <!-- Documentação -->
-                <div id="documentacao" class="page">
-                    <div class="page-header"><h2>Documentação</h2></div>
-                    <div class="info-page">
-                        <div class="info-card">
-                            <h3>Documentos do Sistema</h3>
-                            <p>Nesta seção você pode acessar manuais, guias de uso e documentação técnica do sistema OS Fácil.</p>
+                <div id="documentacao" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Documentação</h2></div>
+                    <div class="max-w-2xl">
+                        <div class="bg-white rounded-xl shadow-sm p-6 mb-5">
+                            <h3 class="text-blue-600 font-semibold mb-3">Documentos do Sistema</h3>
+                            <p class="text-gray-500 leading-relaxed mb-5">Nesta seção você pode acessar manuais, guias de uso e documentação técnica do sistema OS Fácil.</p>
                         </div>
-                        <div class="info-card">
-                            <h3>Manuais</h3>
-                            <p>Manual do Usuário - Cliente<br>Manual do Usuário - Analista Comercial<br>Manual do Usuário - Administrativo<br>Manual do Usuário - Operacional</p>
+                        <div class="bg-white rounded-xl shadow-sm p-6 mb-5">
+                            <h3 class="text-blue-600 font-semibold mb-3">Manuais</h3>
+                            <p class="text-gray-500 leading-relaxed">Manual do Usuário - Cliente<br>Manual do Usuário - Analista Comercial<br>Manual do Usuário - Administrativo<br>Manual do Usuário - Operacional</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Perfil dos Usuários -->
-                <div id="perfil-usuarios" class="page">
-                    <div class="page-header"><h2>Perfil dos Usuários</h2></div>
-                    <div class="table-container">
-                        <table>
-                            <thead><tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Tipo</th><th>Ações</th></tr></thead>
+                <!-- Perfis (Combinado) -->
+                <div id="perfis" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Perfis</h2></div>
+                    <div id="perfisContainer"></div>
+                </div>
+
+                <!-- Perfil dos Clientes -->
+                <div id="perfil-usuarios" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Perfil dos Clientes</h2></div>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+                        <table class="w-full border-collapse min-w-[500px]">
+                            <thead><tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Nome</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">E-mail</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th></tr></thead>
                             <tbody id="perfilUsuariosTable"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- Serviços em Espera de Aprovação -->
-                <div id="servicos-aprovacao" class="page">
-                    <div class="page-header">
-                        <h2>Ordens para Aprovação</h2>
+                <div id="servicos-aprovacao" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8">
+                        <h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Ordens para Aprovação</h2>
                     </div>
-                    <div class="table-container">
-                        <table>
-                            <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Data</th><th>Ações</th></tr></thead>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+                        <table class="w-full border-collapse min-w-[500px]">
+                            <thead><tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Data</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th></tr></thead>
                             <tbody id="servicosAprovacaoTable"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- Perfil dos Funcionários -->
-                <div id="perfil-funcionarios" class="page">
-                    <div class="page-header"><h2>Perfil dos Funcionários</h2></div>
-                    <div class="table-container">
-                        <table>
-                            <thead><tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Cargo</th><th>Ações</th></tr></thead>
+                <div id="perfil-funcionarios" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Perfil dos Funcionários</h2></div>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+                        <table class="w-full border-collapse min-w-[500px]">
+                            <thead><tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Nome</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">E-mail</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cargo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Ações</th></tr></thead>
                             <tbody id="perfilFuncionariosTable"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- Histórico de Ordens -->
-                <div id="historico-ordens" class="page">
-                    <div class="page-header"><h2>Histórico de Ordens</h2></div>
-                    <div class="table-container">
-                        <table>
-                            <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Abertura</th><th>Conclusão</th></tr></thead>
+                <div id="historico-ordens" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Histórico de Ordens</h2></div>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+                        <table class="w-full border-collapse min-w-[500px]">
+                            <thead><tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Abertura</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Conclusão</th></tr></thead>
                             <tbody id="historicoOrdensTable"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- Ordens Expiradas -->
-                <div id="ordens-expiradas" class="page">
-                    <div class="page-header"><h2>Ordens Expiradas</h2></div>
-                    <div class="table-container">
-                        <table>
-                            <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Status</th><th>Vencimento</th></tr></thead>
+                <div id="ordens-expiradas" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Ordens Expiradas</h2></div>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+                        <table class="w-full border-collapse min-w-[500px]">
+                            <thead><tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Vencimento</th></tr></thead>
                             <tbody id="ordensExpiradasTable"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- Serviços Executados -->
-                <div id="servicos-executados" class="page">
-                    <div class="page-header"><h2>Serviços Executados</h2></div>
-                    <div class="table-container">
-                        <table>
-                            <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Data</th><th>Status</th></tr></thead>
+                <div id="servicos-executados" class="page hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 sm:mb-8"><h2 class="text-xl sm:text-2xl font-semibold text-gray-700">Serviços Executados</h2></div>
+                    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+                        <table class="w-full border-collapse min-w-[500px]">
+                            <thead><tr><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">ID</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Cliente</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Tipo</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Data</th><th class="px-5 py-4 text-left bg-gray-50 text-gray-700 font-semibold">Status</th></tr></thead>
                             <tbody id="servicosExecutadosTable"></tbody>
                         </table>
                     </div>
@@ -625,19 +639,19 @@
     </div>
 
     <!-- Cancelamento OS Modal -->
-    <div id="cancelModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Solicitar Cancelamento</h3>
-                <button class="close-modal" onclick="closeModal('cancelModal')">&times;</button>
+    <div id="cancelModal" class="modal-overlay">
+        <div class="bg-white p-4 sm:p-8 rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl mx-4 sm:mx-0">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-700">Solicitar Cancelamento</h3>
+                <button class="bg-transparent border-none text-2xl cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal('cancelModal')">&times;</button>
             </div>
             <form id="cancelForm">
                 <input type="hidden" id="cancelOSId">
-                <div class="form-group">
-                    <label>Motivo do Cancelamento</label>
-                    <textarea id="cancelMotivo" rows="4" required></textarea>
+                <div class="mb-5">
+                    <label class="block mb-1 text-gray-700 font-medium">Motivo do Cancelamento</label>
+                    <textarea id="cancelMotivo" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-600"></textarea>
                 </div>
-                <button type="submit" class="btn btn-danger">Confirmar Cancelamento</button>
+                <button type="submit" class="px-6 py-3 bg-red-600 text-white rounded-lg font-medium cursor-pointer transition-all hover:bg-red-700">Confirmar Cancelamento</button>
             </form>
         </div>
     </div>
